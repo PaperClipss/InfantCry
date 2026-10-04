@@ -61,7 +61,7 @@ wandb.log({
     "class_weight_max": class_weights.max().item()
 })
 
-criterion = nn.CrossEntropyLoss(weight=class_weights)
+criterion = nn.CrossEntropyLoss()
 
 optimizer = torch.optim.AdamW(model.parameters(), lr=3e-4, weight_decay=1e-4)
 
