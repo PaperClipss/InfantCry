@@ -96,6 +96,8 @@ class CRNN(nn.Module):
             dropout=0.3
         )
 
+        self.attention = nn.Sequential(nn.Linear(256, 64), nn.Tanh(), nn.Linear(64, 1))
+
         # BiLSTM → 128 × 2 directions = 256
         self.classifier = nn.Sequential(
             nn.Dropout(0.5),
@@ -113,8 +115,8 @@ class CRNN(nn.Module):
         x = x.reshape(B, W, C * H)
 
         x, _ = self.lstm(x)
-        x = x.mean(dim=1)
-
+        scores = self.attention(x)
+        weights = torch.softmax(scores, dim=1)
+        x = torch.sum(weights * x, dim=1)
         x = self.classifier(x)
-
         return x
