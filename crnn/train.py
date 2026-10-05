@@ -8,6 +8,13 @@ import wandb
 from sklearn.metrics import accuracy_score, classification_report, f1_score
 
 chunk_df = pd.read_csv("chunk_metadata.csv")
+
+target_classes = ["hungry", "discomfort", "belly pain", "tired", "scared"]
+class_to_label = {name: i for i, name in enumerate(target_classes)}
+
+chunk_df = chunk_df[chunk_df["class"].isin(target_classes)].copy()
+chunk_df["label"] = chunk_df["class"].map(class_to_label)
+
 features = np.memmap("logmel_features.dat", dtype=np.float32, mode="r", shape=(14475, 80, 251))
 
 train_dataset = InfantCryDataset(chunk_df, features, "train")
@@ -18,7 +25,7 @@ train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
 test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
-model = CRNN(num_classes=13)
+model = CRNN(num_classes=5)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("Device:", device)
@@ -30,9 +37,11 @@ model = model.to(device)
 
 wandb.init(
     project="infant_cry",
-    name="crnn-v1",
+    name="crnn-v1.3",
     config={
         "architecture": "3CNN-2Layer-BiLSTM",
+        "num_classes": 5,
+        "classes": target_classes,
         "sample_rate": 16000,
         "n_fft": 1024,
         "hop_length": 256,
@@ -44,22 +53,11 @@ wandb.init(
         "weight_decay": 1e-4,
         "optimizer": "AdamW",
         "scheduler": "ReduceLROnPlateau",
-        "loss": "weighted_cross_entropy",
+        "loss": "cross_entropy",
         "spec_augment": True,
         "epochs": 100
     }
 )
-
-train_labels = chunk_df.loc[chunk_df["split"] == "train", "label"]
-class_counts = train_labels.value_counts().sort_index()
-class_weights = len(train_labels) / (len(class_counts) * class_counts)
-class_weights = torch.tensor(class_weights.values, dtype=torch.float32, device=device)
-
-wandb.log({
-    "class_weight_mean": class_weights.mean().item(),
-    "class_weight_min": class_weights.min().item(),
-    "class_weight_max": class_weights.max().item()
-})
 
 criterion = nn.CrossEntropyLoss()
 

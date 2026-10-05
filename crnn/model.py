@@ -61,7 +61,7 @@ class InfantCryDataset(Dataset):
     
 class CRNN(nn.Module):
 
-    def __init__(self, num_classes=13):
+    def __init__(self, num_classes=5):
         super().__init__()
 
         self.cnn = nn.Sequential(
