@@ -70,7 +70,7 @@ scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="min", fa
 best_val_loss = float("inf")
 early_stop_patience = 10
 epochs_without_improvement = 0
-num_epochs = 100
+num_epochs = 200
 
 for epoch in range(num_epochs):
     model.train()
