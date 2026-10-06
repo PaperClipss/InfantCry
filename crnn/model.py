@@ -83,12 +83,11 @@ class CRNN(nn.Module):
             nn.Conv2d(64, 128, kernel_size=3, padding=1),
             nn.BatchNorm2d(128),
             nn.ReLU(),
-            nn.MaxPool2d(2),
             nn.Dropout2d(0.25)
         )
 
         self.lstm = nn.LSTM(
-            input_size=128 * 10,
+            input_size=128 * 20,
             hidden_size=128,
             num_layers=2,
             batch_first=True,
