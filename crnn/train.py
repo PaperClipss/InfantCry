@@ -147,17 +147,6 @@ for epoch in range(num_epochs):
         f"Val Macro F1: {val_macro_f1:.4f}"
     )
 
-    if val_loss < best_val_loss:
-        best_val_loss = val_loss
-        epochs_without_improvement = 0
-        torch.save(model.state_dict(), "crnn_v1_best.pth")
-        print("Saved best model")
-    else:
-        epochs_without_improvement += 1
-
-        if epochs_without_improvement >= early_stop_patience:
-            print("Early stopping")
-            break
 
 model.load_state_dict(torch.load("crnn_v1_best.pth", map_location=device))
 model.eval()
