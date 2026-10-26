@@ -1,0 +1,7 @@
+{
+  "hunger": 0,
+  "sleepiness": 1,
+  "burping": 2,
+  "gas_lower_wind_pain": 3,
+  "physical_discomfort": 4
+}

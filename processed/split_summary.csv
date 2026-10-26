@@ -1,0 +1,16 @@
+split,class,count
+test,burping,34
+test,gas_lower_wind_pain,14
+test,hunger,22
+test,physical_discomfort,9
+test,sleepiness,94
+train,burping,222
+train,gas_lower_wind_pain,136
+train,hunger,181
+train,physical_discomfort,145
+train,sleepiness,529
+val,burping,24
+val,gas_lower_wind_pain,20
+val,hunger,14
+val,physical_discomfort,14
+val,sleepiness,93
