@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f6f8">
+  <meta name="description" content="InfantCry mobile app for infant cry audio analysis.">
+  <title>InfantCry</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Login screen: demo only until the team's authentication API is connected. -->
+    <main class="login-page" id="loginPage">
+      <div class="login-box">
+        <div class="brand brand-login">
+          <div class="brand-mark" aria-hidden="true">IC</div>
+          <h1>InfantCry</h1>
+          <p>Analysis of Infant Cry</p>
+        </div>
+        <section class="login-form" aria-labelledby="loginTitle">
+          <span class="eyebrow">WELCOME</span>
+          <h2 id="loginTitle">Login</h2>
+          <p class="login-subtitle">Enter your username and password to continue.</p>
+          <div class="mode-notice" role="status">Frontend preview mode · authentication is not connected yet.</div>
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" id="username" placeholder="Enter username" autocomplete="username" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <div class="password-field">
+                <input type="password" id="password" placeholder="Enter password" autocomplete="current-password" required>
+                <button type="button" id="togglePassword" class="password-toggle" aria-label="Show password">Show</button>
+              </div>
+            </div>
+            <p class="login-error" id="loginError" role="alert"></p>
+            <button type="submit" class="primary-button login-button" id="loginButton">Continue</button>
+          </form>
+          <p class="login-footnote">This preview lets us test the mobile screens before the API is connected.</p>
+        </section>
+        <p class="legal-note">InfantCry classifies audio patterns. It is not a medical diagnosis.</p>
+      </div>
+    </main>
+
+    <!-- User analysis screen. The admin dashboard remains in the web application. -->
+    <main class="analysis-page hidden" id="analysisPage">
+      <header class="top-bar">
+        <div class="brand-small">
+          <div class="brand-mark brand-mark-small" aria-hidden="true">IC</div>
+          <div><h1>InfantCry</h1><p>Analysis of Infant Cry</p></div>
+        </div>
+        <button type="button" id="logoutButton" class="logout-button">Log out</button>
+      </header>
+
+      <section class="analysis-container">
+        <div class="page-heading">
+          <span class="eyebrow">AUDIO ANALYSIS</span>
+          <h2>Infant Cry Analysis</h2>
+          <p>Record a cry or choose an existing WAV recording.</p>
+        </div>
+
+        <div class="mode-notice mode-notice-wide" role="status">
+          Frontend preview · the inference model and API are not connected yet. Any result shown here is a placeholder, not an AI prediction.
+        </div>
+
+        <section class="audio-input-area" aria-label="Audio input">
+          <article class="audio-card">
+            <div class="card-heading">
+              <div class="card-symbol" aria-hidden="true">🎙</div>
+              <div><h3>Record</h3><p>Record audio using your phone's microphone.</p></div>
+            </div>
+            <div class="record-time" id="recordTime">00:00</div>
+            <div class="record-state" id="recordState">Ready to record</div>
+            <button type="button" id="recordButton" class="primary-button record-button">Start Recording</button>
+            <span class="small-note">Output: WAV · mono · 16,000 Hz · PCM 16-bit</span>
+          </article>
+
+          <article class="audio-card">
+            <div class="card-heading">
+              <div class="card-symbol upload-symbol" aria-hidden="true">↑</div>
+              <div><h3>Upload</h3><p>Choose an existing audio recording.</p></div>
+            </div>
+            <label for="audioFile" class="secondary-button upload-button">Choose WAV File</label>
+            <input type="file" id="audioFile" accept=".wav,audio/wav,audio/x-wav,audio/wave" hidden>
+            <p class="selected-file" id="selectedFile">No file selected</p>
+            <span class="small-note">WAV input only; converted to the 16 kHz mono format for analysis.</span>
+          </article>
+        </section>
+
+        <section class="audio-section hidden" id="audioSection" aria-label="Selected audio">
+          <div class="audio-section-header">
+            <div class="audio-label-group"><span class="section-title">SELECTED AUDIO</span><h3 id="audioName">Audio selected</h3></div>
+            <button type="button" id="removeAudio" class="text-button">Remove</button>
+          </div>
+          <audio id="audioPlayer" controls preload="metadata">Your browser does not support audio playback.</audio>
+          <div class="audio-metadata" id="audioMetadata">WAV · mono · 16,000 Hz · PCM 16-bit</div>
+        </section>
+
+        <div class="analyze-area">
+          <button type="button" id="analyzeButton" class="primary-button analyze-button" disabled>Analyze Cry</button>
+          <p id="analyzeMessage">Record or upload a WAV file to continue.</p>
+        </div>
+
+        <section class="loading-box hidden" id="loadingBox" aria-live="polite">
+          <div class="loading-spinner" aria-hidden="true"></div>
+          <h3>Preparing preview</h3>
+          <p>In this frontend stage, the real inference API is not connected.</p>
+        </section>
+
+        <section class="result-box hidden" id="resultBox" aria-labelledby="resultTitle">
+          <span class="section-title">RESULT</span>
+          <h3 id="resultTitle">Prediction</h3>
+          <div class="prediction">
+            <div class="prediction-main">
+              <span class="prediction-label">PREDICTED CRY TYPE</span>
+              <h2 id="predictionText">Model not connected</h2>
+              <p id="predictionDescription">The actual prediction will appear after the team's API and model are integrated.</p>
+            </div>
+            <div class="confidence">
+              <span>Confidence</span>
+              <strong id="confidenceText">—</strong>
+            </div>
+          </div>
+          <p class="demo-result-notice" id="demoResultNotice">Placeholder state only — no model prediction has been generated.</p>
+          <div class="feedback-box">
+            <h3>Was this screen helpful?</h3>
+            <p>Feedback submission will be connected when the API supports it.</p>
+            <div class="feedback-buttons">
+              <button type="button" id="feedbackYes" class="feedback-button">Yes</button>
+              <button type="button" id="feedbackNo" class="feedback-button">No</button>
+            </div>
+            <div class="feedback-form hidden" id="feedbackForm">
+              <label for="feedbackText">What could we improve?</label>
+              <textarea id="feedbackText" rows="3" placeholder="Share a comment (optional)"></textarea>
+              <button type="button" id="submitFeedback" class="primary-button submit-feedback">Submit feedback</button>
+            </div>
+            <p class="feedback-success hidden" id="feedbackSuccess" role="status"></p>
+          </div>
+          <button type="button" id="analyzeAnother" class="secondary-button analyze-another">Analyze another recording</button>
+        </section>
+
+        <section class="privacy-note">
+          <span class="privacy-icon" aria-hidden="true">ⓘ</span>
+          <p>InfantCry provides an experimental audio classification. Cry categories do not diagnose illness or replace advice from a qualified healthcare professional.</p>
+        </section>
+      </section>
+      <footer class="footer"><span>InfantCry</span><span>Analysis of Infant Cry</span></footer>
+    </main>
+  </div>
+
+  <script src="app-config.js"></script>
+  <script src="audio-utils.js"></script>
+  <script src="api-client.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

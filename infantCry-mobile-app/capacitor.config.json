@@ -1,0 +1,9 @@
+{
+  "appId": "com.paperclipss.infantcry.mobile",
+  "appName": "InfantCry",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https",
+    "iosScheme": "capacitor"
+  }
+}

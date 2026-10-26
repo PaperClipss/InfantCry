@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">InfantCry</string>
+    <string name="title_activity_main">InfantCry</string>
+    <string name="package_name">com.paperclipss.infantcry.mobile</string>
+    <string name="custom_url_scheme">com.paperclipss.infantcry.mobile</string>
+</resources>

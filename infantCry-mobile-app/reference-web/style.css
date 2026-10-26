@@ -1,0 +1,1460 @@
+/* =========================================================
+   INFANTCRY
+   Main stylesheet
+   ========================================================= */
+
+
+/* -------------------------
+   RESET
+   ------------------------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background: #f5f6f8;
+    color: #20242a;
+}
+
+
+/* -------------------------
+   COMMON
+   ------------------------- */
+
+button,
+input,
+textarea {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =========================================================
+   LOGIN PAGE
+   ========================================================= */
+
+.login-page {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 420px;
+}
+
+
+/* Brand */
+
+.brand {
+    text-align: center;
+
+    margin-bottom: 34px;
+}
+
+.brand h1 {
+    font-size: 31px;
+    font-weight: 700;
+
+    color: #171a1f;
+
+    letter-spacing: -0.7px;
+}
+
+.brand p {
+    margin-top: 6px;
+
+    color: #747b85;
+
+    font-size: 14px;
+}
+
+
+/* Login form */
+
+.login-form {
+    background: #ffffff;
+
+    border: 1px solid #e1e4e8;
+
+    border-radius: 10px;
+
+    padding: 32px;
+
+    box-shadow:
+        0 8px 25px rgba(25, 30, 35, 0.06);
+}
+
+.login-form h2 {
+    font-size: 23px;
+    font-weight: 600;
+
+    color: #1d2127;
+}
+
+.login-subtitle {
+    margin-top: 7px;
+    margin-bottom: 27px;
+
+    color: #7a818b;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* Form fields */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #343940;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+
+    height: 46px;
+
+    padding: 0 13px;
+
+    border: 1px solid #d9dde2;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #20242a;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.form-group input::placeholder {
+    color: #a0a6ae;
+}
+
+.form-group input:focus {
+    border-color: #667085;
+
+    box-shadow:
+        0 0 0 3px rgba(102, 112, 133, 0.10);
+}
+
+
+/* Password */
+
+.password-field {
+    position: relative;
+}
+
+.password-field input {
+    padding-right: 60px;
+}
+
+.password-toggle {
+    position: absolute;
+
+    right: 11px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border: none;
+
+    background: transparent;
+
+    color: #667085;
+
+    font-size: 12px;
+
+    padding: 4px;
+}
+
+.password-toggle:hover {
+    color: #20242a;
+}
+
+
+/* Login error */
+
+.login-error {
+    min-height: 18px;
+
+    margin-top: -5px;
+    margin-bottom: 5px;
+
+    color: #c0392b;
+
+    font-size: 12px;
+}
+
+
+/* Login button */
+
+.login-button {
+    width: 100%;
+
+    height: 46px;
+
+    margin-top: 5px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #252a31;
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease;
+}
+
+.login-button:hover {
+    background: #171b20;
+}
+
+.login-button:active {
+    transform: translateY(1px);
+}
+
+
+/* =========================================================
+   ANALYSIS PAGE
+   ========================================================= */
+
+.analysis-page {
+    min-height: 100vh;
+
+    background: #f5f6f8;
+}
+
+
+/* -------------------------
+   TOP BAR
+   ------------------------- */
+
+.top-bar {
+    height: 72px;
+
+    padding: 0 6%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e2e5e9;
+}
+
+
+/* Small brand */
+
+.brand-small h1 {
+    font-size: 20px;
+    font-weight: 700;
+
+    color: #1c2025;
+
+    letter-spacing: -0.4px;
+}
+
+.brand-small p {
+    margin-top: 1px;
+
+    color: #858b94;
+
+    font-size: 11px;
+}
+
+
+/* User area */
+
+.user-area {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+}
+
+#loggedInUser {
+    color: #555c66;
+
+    font-size: 13px;
+}
+
+.logout-button {
+    border: none;
+
+    background: transparent;
+
+    color: #626a75;
+
+    font-size: 13px;
+
+    padding: 7px 0;
+}
+
+.logout-button:hover {
+    color: #20242a;
+}
+
+
+/* =========================================================
+   ANALYSIS CONTAINER
+   ========================================================= */
+
+.analysis-container {
+    width: min(920px, 90%);
+
+    margin: 0 auto;
+
+    padding: 55px 0 70px;
+}
+
+
+/* Page heading */
+
+.page-heading {
+    margin-bottom: 32px;
+}
+
+.page-heading h2 {
+    font-size: 28px;
+    font-weight: 600;
+
+    color: #20242a;
+
+    letter-spacing: -0.5px;
+}
+
+.page-heading p {
+    margin-top: 7px;
+
+    color: #737b86;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   AUDIO INPUT AREA
+   ========================================================= */
+
+.audio-input-area {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+}
+
+
+/* Audio card */
+
+.audio-card {
+    min-height: 220px;
+
+    padding: 25px;
+
+    background: #ffffff;
+
+    border: 1px solid #dfe3e7;
+
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.audio-card:hover {
+    border-color: #c7ccd2;
+
+    box-shadow:
+        0 5px 18px rgba(30, 35, 40, 0.05);
+}
+
+
+/* Card heading */
+
+.card-heading {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 13px;
+}
+
+.card-symbol {
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    background: #f0f2f4;
+
+    color: #454c55;
+
+    font-size: 18px;
+}
+
+.card-heading h3 {
+    font-size: 16px;
+    font-weight: 600;
+
+    color: #272c32;
+}
+
+.card-heading p {
+    margin-top: 3px;
+
+    color: #858c95;
+
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+
+/* Recording time */
+
+.record-time {
+    margin-top: 26px;
+
+    font-size: 22px;
+    font-weight: 600;
+
+    color: #333941;
+
+    font-variant-numeric: tabular-nums;
+}
+
+
+/* Main button */
+
+.main-button {
+    width: 100%;
+
+    height: 43px;
+
+    margin-top: 14px;
+
+    border: 1px solid #292e34;
+
+    border-radius: 6px;
+
+    background: #292e34;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.main-button:hover {
+    background: #1d2126;
+
+    border-color: #1d2126;
+}
+
+.main-button.recording {
+    background: #dc3545;
+    border-color: #dc3545;
+    color: #ffffff;
+}
+
+.main-button.recording:hover {
+    background: #b02a37;
+    border-color: #b02a37;
+}
+
+
+
+/* Upload */
+
+.upload-button {
+    width: 100%;
+
+    height: 43px;
+
+    margin-top: 29px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #cfd4da;
+
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #353b43;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.upload-button:hover {
+    background: #f7f8f9;
+
+    border-color: #aeb5bd;
+}
+
+
+/* Selected file */
+
+.selected-file {
+    width: 100%;
+
+    margin-top: 10px;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+    color: #69717b;
+
+    font-size: 11px;
+
+    text-align: center;
+}
+
+
+/* Small note */
+
+.small-note {
+    margin-top: auto;
+
+    padding-top: 14px;
+
+    color: #9aa1a9;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   AUDIO PREVIEW
+   ========================================================= */
+
+.audio-section {
+    margin-top: 18px;
+
+    padding: 22px 24px;
+
+    background: #ffffff;
+
+    border: 1px solid #dfe3e7;
+
+    border-radius: 10px;
+}
+
+.audio-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 15px;
+}
+
+.section-title {
+    display: block;
+
+    color: #858c95;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+.audio-section-header h3 {
+    margin-top: 4px;
+
+    color: #343a41;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.text-button {
+    border: none;
+
+    background: transparent;
+
+    color: #7a818a;
+
+    font-size: 12px;
+}
+
+.text-button:hover {
+    color: #b83b35;
+}
+
+.audio-section audio {
+    width: 100%;
+
+    height: 40px;
+}
+
+
+/* =========================================================
+   ANALYZE
+   ========================================================= */
+
+.analyze-area {
+    padding: 35px 0 15px;
+
+    text-align: center;
+}
+
+.analyze-button {
+    min-width: 170px;
+
+    height: 45px;
+
+    padding: 0 30px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #252a30;
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition:
+        background 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.analyze-button:hover:not(:disabled) {
+    background: #171b20;
+}
+
+.analyze-button:disabled {
+    background: #c9cdd2;
+
+    color: #f7f7f7;
+
+    cursor: not-allowed;
+}
+
+.analyze-area p {
+    margin-top: 10px;
+
+    color: #8a919a;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading-box {
+    margin-top: 10px;
+
+    padding: 35px;
+
+    background: #ffffff;
+
+    border: 1px solid #dfe3e7;
+
+    border-radius: 10px;
+
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 28px;
+    height: 28px;
+
+    margin: 0 auto 15px;
+
+    border: 3px solid #e2e5e8;
+
+    border-top-color: #454c55;
+
+    border-radius: 50%;
+
+    animation: spin 0.8s linear infinite;
+}
+
+.loading-box h3 {
+    font-size: 15px;
+    font-weight: 600;
+
+    color: #333941;
+}
+
+.loading-box p {
+    margin-top: 5px;
+
+    color: #858c95;
+
+    font-size: 12px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   RESULT
+   ========================================================= */
+
+.result-box {
+    margin-top: 15px;
+
+    background: #ffffff;
+
+    border: 1px solid #dfe3e7;
+
+    border-radius: 10px;
+
+    padding: 26px;
+}
+
+.result-box > h3 {
+    margin-top: 4px;
+
+    font-size: 18px;
+    font-weight: 600;
+
+    color: #292e34;
+}
+
+
+/* Prediction */
+
+.prediction {
+    margin-top: 20px;
+
+    padding: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    background: #f7f8f9;
+
+    border: 1px solid #e7e9ec;
+
+    border-radius: 8px;
+}
+
+.prediction-label {
+    color: #858c95;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.8px;
+}
+
+.prediction h2 {
+    margin-top: 5px;
+
+    color: #242930;
+
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.prediction p {
+    max-width: 550px;
+
+    margin-top: 5px;
+
+    color: #737b85;
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* Confidence */
+
+.confidence {
+    min-width: 100px;
+
+    padding-left: 20px;
+
+    border-left: 1px solid #dfe3e7;
+
+    text-align: right;
+}
+
+.confidence span {
+    display: block;
+
+    color: #8a9199;
+
+    font-size: 10px;
+}
+
+.confidence strong {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #343a41;
+
+    font-size: 24px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   FEEDBACK
+   ========================================================= */
+
+.feedback-box {
+    margin-top: 22px;
+
+    padding-top: 24px;
+
+    border-top: 1px solid #e5e7ea;
+
+    text-align: center;
+}
+
+.feedback-box h3 {
+    color: #343940;
+
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.feedback-box > p {
+    margin-top: 4px;
+
+    color: #858c95;
+
+    font-size: 12px;
+}
+
+
+/* Feedback buttons */
+
+.feedback-buttons {
+    display: flex;
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 18px;
+}
+
+.feedback-button {
+    width: 90px;
+    height: 38px;
+
+    border: 1px solid #d4d8dd;
+
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #4b525b;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.feedback-button:hover {
+    background: #f5f6f7;
+
+    border-color: #aeb5bd;
+}
+
+.feedback-button.selected {
+    background: #eef0f2;
+
+    border-color: #737b85;
+
+    color: #242930;
+}
+
+
+/* Feedback form */
+
+.feedback-form {
+    width: min(500px, 100%);
+
+    margin: 20px auto 0;
+
+    text-align: left;
+}
+
+.feedback-form label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #4a515a;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.feedback-form label span {
+    color: #9aa1a9;
+
+    font-weight: 400;
+}
+
+.feedback-form textarea {
+    width: 100%;
+
+    resize: vertical;
+
+    min-height: 85px;
+
+    padding: 11px 12px;
+
+    border: 1px solid #d5d9de;
+
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #252a30;
+
+    font-size: 12px;
+
+    outline: none;
+}
+
+.feedback-form textarea::placeholder {
+    color: #a2a8af;
+}
+
+.feedback-form textarea:focus {
+    border-color: #8a919a;
+}
+
+
+/* Submit feedback */
+
+.submit-feedback {
+    height: 38px;
+
+    margin-top: 10px;
+
+    padding: 0 18px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #343a41;
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.submit-feedback:hover {
+    background: #242930;
+}
+
+
+/* Success */
+
+.feedback-success {
+    margin-top: 17px !important;
+
+    color: #4c7455 !important;
+
+    font-size: 12px !important;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+    width: min(920px, 90%);
+
+    margin: 0 auto;
+
+    padding: 18px 0 25px;
+
+    display: flex;
+    justify-content: space-between;
+
+    border-top: 1px solid #e0e3e7;
+
+    color: #9aa1a9;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .top-bar {
+        padding: 0 5%;
+    }
+
+    .analysis-container {
+        width: 92%;
+
+        padding-top: 40px;
+    }
+
+    .audio-input-area {
+        grid-template-columns: 1fr;
+    }
+
+    .audio-card {
+        min-height: 205px;
+    }
+
+    .prediction {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .confidence {
+        width: 100%;
+
+        padding-left: 0;
+        padding-top: 15px;
+
+        border-left: none;
+        border-top: 1px solid #dfe3e7;
+
+        text-align: left;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .login-page {
+        padding: 20px;
+    }
+
+    .login-form {
+        padding: 24px 20px;
+    }
+
+    .brand h1 {
+        font-size: 27px;
+    }
+
+    .top-bar {
+        height: 64px;
+    }
+
+    .brand-small h1 {
+        font-size: 18px;
+    }
+
+    .user-area {
+        gap: 10px;
+    }
+
+    #loggedInUser {
+        display: none;
+    }
+
+    .analysis-container {
+        padding-top: 32px;
+    }
+
+    .page-heading h2 {
+        font-size: 23px;
+    }
+
+    .page-heading p {
+        font-size: 13px;
+    }
+
+    .audio-card {
+        padding: 21px;
+    }
+
+    .audio-section {
+        padding: 18px;
+    }
+
+    .result-box {
+        padding: 20px;
+    }
+
+    .prediction {
+        padding: 18px;
+    }
+
+    .footer {
+        flex-direction: column;
+
+        gap: 5px;
+
+        text-align: center;
+    }
+}
+.login-box-wide {
+    width: min(900px, 94%);
+}
+
+.login-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 28px;
+}
+
+.login-card {
+    min-width: 0;
+    padding: 24px;
+    border: 1px solid #e1e4e8;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.login-card-icon {
+    margin-bottom: 12px;
+    font-size: 28px;
+}
+
+.login-card h2 {
+    margin-bottom: 8px;
+}
+
+@media (max-width: 650px) {
+    .login-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ========================================
+   ADMIN DASHBOARD
+======================================== */
+
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin: 28px 0;
+}
+
+.admin-stat-card {
+    padding: 22px;
+    background: #ffffff;
+    border: 1px solid #e1e4e8;
+    border-radius: 10px;
+    min-width: 0;
+}
+
+.admin-stat-card p {
+    margin: 0 0 12px;
+    color: #626b76;
+    font-size: 14px;
+}
+
+.admin-stat-card h2 {
+    margin: 0 0 10px;
+    color: #252a30;
+    font-size: 25px;
+    overflow-wrap: anywhere;
+}
+
+.admin-stat-card span {
+    color: #78818c;
+    font-size: 12px;
+}
+
+
+/* ========================================
+   ADMIN PANELS
+======================================== */
+
+.admin-panel {
+    margin-top: 24px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e1e4e8;
+    border-radius: 10px;
+    min-width: 0;
+}
+
+.admin-panel > h3,
+.admin-panel-heading h3 {
+    margin: 0 0 8px;
+    color: #252a30;
+    font-size: 19px;
+}
+
+.admin-panel > p,
+.admin-panel-heading p {
+    margin: 0 0 18px;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.admin-panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.admin-panel-heading p {
+    margin-bottom: 0;
+}
+
+.admin-data-notice {
+    padding: 12px 14px;
+    background: #f5f6f8;
+    border: 1px solid #e1e4e8;
+    border-radius: 7px;
+    color: #626b76;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* ========================================
+   RECENT ENTRIES TABLE
+======================================== */
+
+.admin-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #e8eaed;
+    white-space: nowrap;
+}
+
+.admin-table th {
+    background: #f8f9fa;
+    color: #535c67;
+    font-weight: 600;
+}
+
+.admin-table td {
+    color: #424a53;
+}
+
+.admin-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ========================================
+   MODEL CONFIGURATION
+======================================== */
+
+.model-config-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.model-config-grid > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    background: #f8f9fa;
+    border: 1px solid #e8eaed;
+    border-radius: 8px;
+    min-width: 0;
+}
+
+.model-config-grid span {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.model-config-grid strong {
+    color: #252a30;
+    font-size: 15px;
+    overflow-wrap: anywhere;
+}
+
+
+/* ========================================
+   ADMIN FEEDBACK
+======================================== */
+
+#adminFeedbackList {
+    color: #626b76;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.admin-api-message {
+    margin-top: 20px;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* ========================================
+   ADMIN RESPONSIVE LAYOUT
+======================================== */
+
+@media (max-width: 760px) {
+    .admin-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-panel {
+        padding: 18px;
+    }
+
+    .admin-panel-heading {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .model-config-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-stat-card {
+        padding: 18px;
+    }
+
+    .admin-panel {
+        padding: 14px;
+    }
+
+    .admin-table th,
+    .admin-table td {
+        padding: 11px 9px;
+    }
+}
+/* Clearly show the selected feedback option */
+.feedback-button.selected-yes {
+    background: #e4f5e9;
+    border: 2px solid #25834a;
+    color: #176534;
+}
+
+.feedback-button.selected-no {
+    background: #fce8e6;
+    border: 2px solid #c43d36;
+    color: #a12b26;
+}
+
+.feedback-button.selected {
+    font-weight: 700;
+    transform: translateY(-1px);
+}

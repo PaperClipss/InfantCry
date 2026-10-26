@@ -1,0 +1,353 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfantCry</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- SINGLE LOGIN PAGE -->
+    <main class="login-page" id="loginPage">
+        <div class="login-box">
+            <div class="brand">
+                <h1>InfantCry</h1>
+                <p>Analysis of Infant Cry</p>
+            </div>
+
+            <div class="login-form">
+                <h2>Login</h2>
+                <p class="login-subtitle">
+                    Enter your username and password to continue.
+                </p>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username"
+                               placeholder="Enter username"
+                               autocomplete="username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="password-field">
+                            <input type="password" id="password"
+                                   placeholder="Enter password"
+                                   autocomplete="current-password" required>
+                            <button type="button" id="togglePassword"
+                                    class="password-toggle">Show</button>
+                        </div>
+                    </div>
+
+                    <p class="login-error" id="loginError"></p>
+
+                    <button type="submit" class="login-button">
+                        Login
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+
+    <!-- USER ANALYSIS PAGE -->
+    <main class="analysis-page hidden" id="analysisPage">
+
+        <header class="top-bar">
+            <div class="brand-small">
+                <h1>InfantCry</h1>
+                <p>Analysis of Infant Cry</p>
+            </div>
+
+            <div class="user-area">
+                <span id="loggedInUser">User</span>
+                <button type="button" id="logoutButton"
+                        class="logout-button">Logout</button>
+            </div>
+        </header>
+
+        <section class="analysis-container">
+            <div class="page-heading">
+                <h2>Infant Cry Analysis</h2>
+                <p>Record an infant cry or upload an existing WAV file.</p>
+            </div>
+
+            <div class="audio-input-area">
+
+                <!-- RECORD -->
+                <div class="audio-card">
+                    <div class="card-heading">
+                        <div class="card-symbol">🎙</div>
+                        <div>
+                            <h3>Record</h3>
+                            <p>Record audio using your microphone.</p>
+                        </div>
+                    </div>
+
+                    <div class="record-time" id="recordTime">00:00</div>
+
+                    <button type="button" id="recordButton"
+                            class="main-button">Start Recording</button>
+
+                    <span class="small-note">Recording will be saved as WAV</span>
+                </div>
+
+                <!-- UPLOAD -->
+                <div class="audio-card">
+                    <div class="card-heading">
+                        <div class="card-symbol">↑</div>
+                        <div>
+                            <h3>Upload</h3>
+                            <p>Choose an existing audio file.</p>
+                        </div>
+                    </div>
+
+                    <label for="audioFile" class="upload-button">
+                        Choose WAV File
+                    </label>
+
+                    <input type="file" id="audioFile"
+                           accept=".wav,audio/wav,audio/x-wav,audio/wave" hidden>
+
+                    <p class="selected-file" id="selectedFile">
+                        No file selected
+                    </p>
+
+                    <span class="small-note">WAV files only</span>
+                </div>
+            </div>
+
+            <!-- AUDIO PREVIEW -->
+            <section class="audio-section hidden" id="audioSection">
+                <div class="audio-section-header">
+                    <div>
+                        <span class="section-title">AUDIO</span>
+                        <h3 id="audioName">Audio selected</h3>
+                    </div>
+
+                    <button type="button" id="removeAudio"
+                            class="text-button">Remove</button>
+                </div>
+
+                <audio id="audioPlayer" controls></audio>
+            </section>
+
+            <!-- ANALYZE -->
+            <div class="analyze-area">
+                <button type="button" id="analyzeButton"
+                        class="analyze-button" disabled>Analyze</button>
+                <p id="analyzeMessage">
+                    Record or upload a WAV file to continue.
+                </p>
+            </div>
+
+            <!-- LOADING -->
+            <section class="loading-box hidden" id="loadingBox">
+                <div class="loading-spinner"></div>
+                <h3>Analyzing audio</h3>
+                <p>Please wait while the model processes the recording.</p>
+            </section>
+
+            <!-- RESULT -->
+            <section class="result-box hidden" id="resultBox">
+                <span class="section-title">RESULT</span>
+                <h3>Prediction</h3>
+
+                <div class="prediction">
+                    <div>
+                        <span class="prediction-label">Predicted cry type</span>
+                        <h2 id="predictionText">Prediction will appear here</h2>
+                        <p id="predictionDescription">
+                            The model prediction will be displayed here once
+                            the model is connected.
+                        </p>
+                    </div>
+
+                    <div class="confidence">
+                        <span>Confidence</span>
+                        <strong id="confidenceText">
+                            Percentage will appear here
+                        </strong>
+                    </div>
+                </div>
+
+                <!-- FEEDBACK -->
+                <div class="feedback-box">
+                    <h3>Was this prediction helpful?</h3>
+                    <p>Your feedback helps us improve the system.</p>
+
+                    <div class="feedback-buttons">
+                        <button type="button" id="feedbackYes"
+                                class="feedback-button">Yes</button>
+                        <button type="button" id="feedbackNo"
+                                class="feedback-button">No</button>
+                    </div>
+
+                    <div class="feedback-form hidden" id="feedbackYesForm">
+                        <label for="feedbackYesText">
+                            What additional thing would make this better?
+                        </label>
+                        <textarea id="feedbackYesText" rows="4"
+                                  placeholder="Tell us what could improve the experience..."></textarea>
+                        <button type="button" id="submitYesFeedback"
+                                class="submit-feedback">Submit Feedback</button>
+                    </div>
+
+                    <div class="feedback-form hidden" id="feedbackNoForm">
+                        <label for="feedbackNoText">
+                            Sorry about that. How could we make it better?
+                            What caused you to click No?
+                        </label>
+                        <textarea id="feedbackNoText" rows="4"
+                                  placeholder="Tell us what went wrong..."></textarea>
+                        <button type="button" id="submitNoFeedback"
+                                class="submit-feedback">Submit Feedback</button>
+                    </div>
+
+                    <p class="feedback-success hidden" id="feedbackSuccess">
+                        Thank you for your feedback.
+                    </p>
+                </div>
+            </section>
+        </section>
+
+        <footer class="footer">
+            <span>InfantCry</span>
+            <span>Analysis of Infant Cry</span>
+        </footer>
+    </main>
+
+
+    <!-- ADMIN DASHBOARD -->
+    <main class="analysis-page hidden" id="adminPage">
+
+        <header class="top-bar">
+            <div class="brand-small">
+                <h1>InfantCry</h1>
+                <p>Administration</p>
+            </div>
+
+            <div class="user-area">
+                <span id="loggedInAdmin">Admin</span>
+                <button type="button" id="adminLogoutButton"
+                        class="logout-button">Logout</button>
+            </div>
+        </header>
+
+        <section class="analysis-container">
+            <div class="page-heading">
+                <h2>Admin Dashboard</h2>
+                <p>Overview of InfantCry activity and model configuration.</p>
+            </div>
+
+            <!-- SUMMARY CARDS -->
+            <div class="admin-stats">
+                <article class="admin-stat-card">
+                    <p>Total entries</p>
+                    <h2 id="totalEntries">—</h2>
+                    <span>Awaiting API data</span>
+                </article>
+
+                <article class="admin-stat-card">
+                    <p>Model status</p>
+                    <h2 id="modelStatus">Not connected</h2>
+                    <span>Awaiting API data</span>
+                </article>
+
+                <article class="admin-stat-card">
+                    <p>Recent activity</p>
+                    <h2 id="recentEntryCount">—</h2>
+                    <span>Awaiting API data</span>
+                </article>
+            </div>
+
+            <!-- RECENT ENTRIES -->
+            <section class="admin-panel">
+                <div class="admin-panel-heading">
+                    <div>
+                        <h3>Recent user entries</h3>
+                        <p>Latest analysis activity recorded by the system.</p>
+                    </div>
+                    <button type="button" id="refreshEntriesButton"
+                            class="text-button">Refresh</button>
+                </div>
+
+                <p class="admin-data-notice" id="entriesDataNotice">
+                    Placeholder data — waiting for backend connection.
+                </p>
+
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Entry ID</th>
+                                <th>User</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentEntriesBody">
+                            <tr>
+                                <td colspan="4">No backend data available.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- MODEL CONFIGURATION -->
+            <section class="admin-panel">
+                <h3>Model configuration</h3>
+                <p>Model details will be retrieved from the backend.</p>
+
+                <div class="model-config-grid">
+                    <div>
+                        <span>Model name</span>
+                        <strong id="modelName">Not configured</strong>
+                    </div>
+                    <div>
+                        <span>Model version</span>
+                        <strong id="modelVersion">—</strong>
+                    </div>
+                    <div>
+                        <span>Input format</span>
+                        <strong>WAV audio</strong>
+                    </div>
+                    <div>
+                        <span>API status</span>
+                        <strong id="modelApiStatus">Not connected</strong>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FEEDBACK OVERVIEW -->
+            <section class="admin-panel">
+                <h3>User feedback</h3>
+                <p>Feedback submitted after predictions will appear here.</p>
+
+                <p class="admin-data-notice" id="feedbackDataNotice">
+                    Placeholder data — waiting for backend connection.
+                </p>
+
+                <div id="adminFeedbackList">
+                    No feedback data available.
+                </div>
+            </section>
+
+            <p class="admin-api-message" id="adminApiMessage">
+                Admin data is currently using placeholders.
+            </p>
+        </section>
+
+        <footer class="footer">
+            <span>InfantCry</span>
+            <span>Admin Dashboard</span>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
