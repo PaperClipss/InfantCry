@@ -1005,6 +1005,7 @@ if (analyzeButton) {
     analyzeButton.addEventListener("click", analyzeAudio);
 }
 
+
 async function analyzeAudio() {
     if (!currentAudio || isAnalyzing) return;
 
@@ -1017,21 +1018,26 @@ async function analyzeAudio() {
     analysisRequestController = new AbortController();
 
     try {
-        const formData = new FormData();
-        formData.append("audio", currentAudio, currentAudio.name || "recording.wav");
+        const headers = {
+            "Content-Type": "audio/wav"
+        };
 
-        const headers = {};
-        if (authToken) headers.Authorization = `Bearer ${authToken}`;
+        if (authToken) {
+            headers.Authorization = `Bearer ${authToken}`;
+        }
 
         const response = await fetch(`${API_BASE_URL}/analysis`, {
             method: "POST",
             headers,
-            body: formData,
+            body: currentAudio,
             signal: analysisRequestController.signal
         });
 
         if (!response.ok) {
-            throw new Error(`Analysis failed (${response.status}).`);
+            const errorData = await response.json();
+            throw new Error(
+                errorData.detail || `Analysis failed (${response.status}).`
+            );
         }
 
         const data = await response.json();
@@ -1040,16 +1046,20 @@ async function analyzeAudio() {
     } catch (error) {
         if (error.name !== "AbortError") {
             console.error("Analysis error:", error);
+
             setText(
                 analyzeMessage,
-                "Could not analyze this recording. Check the backend connection and try again."
+                error.message || "Could not analyze this recording."
             );
         }
     } finally {
         isAnalyzing = false;
         analysisRequestController = null;
         hide(loadingBox);
-        if (analyzeButton) analyzeButton.disabled = !currentAudio;
+
+        if (analyzeButton) {
+            analyzeButton.disabled = !currentAudio;
+        }
     }
 }
 
