@@ -29,6 +29,22 @@ from inference import load_inference_model, predict_cry, CLASS_NAMES
 
 app = FastAPI()
 
+
+
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://127.0.0.1:5500",
+        "http://localhost:5500",
+        "http://0.0.0.0:8000"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
 BASE_DIR = Path(__file__).resolve().parent
 
 MODEL_PATH = "crnn_semantic_weighted_no_aug_best.pth"
