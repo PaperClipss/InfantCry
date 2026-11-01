@@ -228,6 +228,10 @@ async def Analysis(request: Request):
     try:
         audio_bytes = await request.body()
 
+
+        #audio_bytes = Path("test_audio(burping).wav").read_bytes()
+
+
         if len(audio_bytes) > MAX_UPLOAD_SIZE:
             raise HTTPException(
                 status_code=status.HTTP_413_CONTENT_TOO_LARGE,
@@ -303,10 +307,13 @@ async def Analysis(request: Request):
 def Feedback(
     fb: Feedback,
 ):
-
+    ana = list()
+    for i in analysis_records.keys():
+        ana.append(i)
+    analysis_id = ana[-1]
     user = get_current_user(session_id)
 
-    analysis = analysis_records.get(fb.analysis_id)
+    analysis = analysis_records.get(analysis_id)
 
     if analysis is None:
 
@@ -323,8 +330,8 @@ def Feedback(
         )
 
     # Store feedback against its analysis ID.
-    Fb[fb.analysis_id] = {
-        "analysis_id": fb.analysis_id,
+    Fb[analysis_id] = {
+        "analysis_id": analysis_id,
         "email": user["email"],
         "helpful": fb.helpful,
         "comment": fb.comment,
@@ -408,7 +415,7 @@ def AdminModelConfig(
         return {
             "model_name": "CRNN",
             "model_status": "loaded",
-            "checkpoint": MODEL_PATH.name,
+            "checkpoint": MODEL_PATH,
             "classes": CLASS_NAMES,
             "preprocessing_config": preprocessing_config
         }
