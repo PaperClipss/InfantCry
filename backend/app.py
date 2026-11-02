@@ -118,35 +118,10 @@ def Home():
 # --------------------------------------------------
 
 @app.post(
-    "/api/auth/signup",
+    "/api/auth/login",
     status_code=status.HTTP_201_CREATED
 )
-def Signup(entry: Entry):
 
-    global USER_CNT
-
-    # Only one account is allowed.
-    if database:
-
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="An account already exists"
-        )
-
-    password_hashed = pwd_context.hash(entry.Password)
-
-    USER_CNT += 1
-
-    database[USER_CNT] = {
-        "email": str(entry.Mail),
-        "password": password_hashed,
-        "created_at": datetime.now(timezone.utc).isoformat()
-    }
-
-    return {
-        "success": True,
-        "message": "Account created successfully"
-    }
 
 
 # --------------------------------------------------
@@ -157,8 +132,30 @@ def Signup(entry: Entry):
 def Login(
     entry: Entry,
     response: Response
-):
-
+    ):
+    global USER_CNT
+    entry.Mail = "demo@gmail.com"
+    entry.Password = "password"
+        # Only one account is allowed.
+    if database:
+    
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="An account already exists"
+            )
+    
+    password_hashed = pwd_context.hash(entry.Password)
+    
+    USER_CNT += 1
+    
+    database[USER_CNT] = {
+            "email": str(entry.Mail),
+            "password": password_hashed,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+    
+        
+    
     if not database:
 
         raise HTTPException(
