@@ -1,22 +1,20 @@
-
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InfantCry — Listen with Care</title>
     <meta name="theme-color" content="#081725">
+    <meta name="description" content="InfantCry helps caregivers explore infant cry audio patterns with care.">
+    <title>InfantCry — Listen with Care</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="./reference-exact.css">
-    <link rel="stylesheet" href="./page-system.css">
-    <link rel="stylesheet" href="./requested-updates.css">
+    <link rel="stylesheet" href="./style-light-theme.css">
 </head>
 <body>
+    <a class="skip-link" href="#mainContent">Skip to content</a>
 
-    <!-- LOGIN SCREEN: reference-matched split layout -->
+    <!-- AUTHENTICATION -->
     <main class="login-page reference-login" id="loginPage">
         <section class="login-visual-panel" aria-labelledby="landingTitle">
             <a class="landing-brand" id="landingBrandLink" href="#landingHome" aria-label="InfantCry home">
@@ -24,14 +22,21 @@
                 <span class="landing-brand-copy">InfantCry<small>LISTEN WITH CARE</small></span>
             </a>
             <div class="login-visual-copy" id="landingHome">
-                <span class="landing-eyebrow"><span aria-hidden="true"></span> INFANT CRY SUPPORT, MADE FOR CAREGIVERS</span>
-                <h1 id="landingTitle">Understanding<br><em>every cry.</em></h1>
-                <p class="landing-lede">Record a cry or upload a WAV file to explore its audio patterns<br class="login-wide-break"> and view the predicted cry reason. Because<br class="login-wide-break"> every little sound matters.</p>
+                <span class="landing-eyebrow"><span aria-hidden="true"></span> A CALMER WAY TO LISTEN</span>
+                <h1 id="landingTitle">Every little sound.<br><em>Deserves care.</em></h1>
+                <p class="landing-lede">Some moments are hard to read. InfantCry gives you a thoughtful space to record a cry, explore the pattern a model predicts, and keep your own observations in focus.</p>
+                <div class="login-value-list" aria-label="What InfantCry helps with">
+                    <div><span class="value-index">01</span><span><strong>Capture a moment</strong><small>Record or choose a WAV clip.</small></span></div>
+                    <div><span class="value-index">02</span><span><strong>Explore a pattern</strong><small>Review the category predicted by the model.</small></span></div>
+                    <div><span class="value-index">03</span><span><strong>Decide with context</strong><small>Use your observations and seek care when needed.</small></span></div>
+                </div>
             </div>
             <div class="login-watermark" aria-hidden="true">
-                <img src="img2.jpeg" alt="">
+                <img class="cradle-art-dark" src="./assets/infant-cradle-watermark.png" alt="">
+                <img class="cradle-art-light" src="./assets/infant-cradle-watermark-light.png" alt="">
             </div>
             <div class="login-quote"><span></span><p>“ SMALL SOUNDS.<br>BRIGHTER DAYS. ”</p></div>
+            <div class="login-visual-orbit" aria-hidden="true"></div>
         </section>
 
         <section class="landing-login-section reference-login-card" id="loginPanel" aria-label="Sign in to InfantCry">
@@ -39,29 +44,24 @@
                 <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M4 21h6l3-8 5 16 5-20 4 12h8"/></svg></span>
                 <span>InfantCry<small>LISTEN WITH CARE</small></span>
             </div>
+            <div class="auth-context"><span class="section-kicker">YOUR CAREGIVER SPACE</span><span class="auth-context-dot" aria-hidden="true"></span></div>
             <div class="brand"><h1>Welcome back</h1><p>Sign in to continue to InfantCry.</p></div>
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="username">Email</label>
-                    <div class="reference-input"><span aria-hidden="true" class="input-icon">✉</span><input type="text" id="username" placeholder="your.email@example.com" autocomplete="username" required></div>
+                    <label for="username">Email address</label>
+                    <div class="reference-input"><span aria-hidden="true" class="input-icon">✉</span><input type="email" id="username" name="Mail" placeholder="you@example.com" autocomplete="email" inputmode="email" required></div>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <div class="password-field reference-input"><span aria-hidden="true" class="input-icon">♙</span><input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required><button type="button" id="togglePassword" class="password-toggle" aria-label="Show password">◉</button></div>
+                    <div class="password-field reference-input"><span aria-hidden="true" class="input-icon">⌑</span><input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required><button type="button" id="togglePassword" class="password-toggle" aria-label="Show password" aria-pressed="false">◉</button></div>
                 </div>
-                <div class="login-utility-row"><span class="forgot-link" aria-disabled="true">Forgot password?</span></div>
                 <p class="login-error" id="loginError" aria-live="polite"></p>
                 <button type="submit" class="login-button">Sign in <span aria-hidden="true">→</span></button>
-                <div class="login-divider"><span></span><p>or continue with</p><span></span></div>
-                <div class="social-login-row">
-                    <button type="button" class="social-login" disabled title="Google sign-in is not configured"><span class="google-g">G</span>Google</button>
-                    <button type="button" class="social-login" disabled title="GitHub sign-in is not configured"><span class="github-mark">●</span>GitHub</button>
-                </div>
                 <p class="login-signup-prompt">Don't have an account? <span>Sign up</span></p>
             </form>
+            <div class="auth-footnote"><span aria-hidden="true">⌁</span><p>Use the email and password associated with your InfantCry account.</p></div>
         </section>
 
-        <!-- Compatibility hooks retained for the existing login script. -->
         <div class="legacy-login-hooks" hidden>
             <button type="button" id="getStartedButton">Get started</button>
             <button type="button" id="navLoginButton">Login</button>
@@ -69,430 +69,284 @@
         </div>
     </main>
 
-
-        <!-- USER ANALYSIS PAGE -->
+    <!-- CAREGIVER APPLICATION -->
     <main class="analysis-page hidden" id="analysisPage">
-
         <header class="top-bar reference-topbar">
             <div class="brand-small">
-                <h1>InfantCry</h1>
-                <p>Analysis of Infant Cry</p>
+                <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M4 21h6l3-8 5 16 5-20 4 12h8"/></svg></span>
+                <span><h1>InfantCry</h1><p>Caregiver workspace</p></span>
             </div>
-            <div class="user-area">
-                <div class="profile-menu-wrap">
-                    <button type="button" id="logoutButton" class="reference-profile" aria-haspopup="true" aria-expanded="false" aria-controls="profileDropdown">
-                        <span class="reference-avatar" id="profileTriggerAvatar">P</span>
-                        <span id="profileTriggerName">Parent</span>
-                        <span class="theme-chevron" aria-hidden="true">⌄</span>
-                    </button>
-                    <div class="profile-dropdown hidden" id="profileDropdown" role="menu" aria-labelledby="logoutButton">
-                        <div class="profile-dropdown-heading"><strong id="profileMenuUsername">Parent</strong><small>InfantCry account</small></div>
-                        <button type="button" id="profileMenuProfile" class="profile-menu-item" role="menuitem"><span aria-hidden="true">♙</span> My profile</button>
-                        <button type="button" id="profileMenuPassword" class="profile-menu-item" role="menuitem"><span aria-hidden="true">♧</span> Change password</button>
-                        <div class="profile-menu-divider"></div>
-                        <button type="button" id="profileMenuLogout" class="profile-menu-item profile-menu-logout" role="menuitem"><span aria-hidden="true">↪</span> Log out</button>
+            <div class="topbar-right">
+                <span class="topbar-note"><span class="topbar-live-dot"></span> Your listening space</span>
+                <div class="user-area">
+                    <div class="profile-menu-wrap">
+                        <button type="button" id="logoutButton" class="reference-profile" aria-haspopup="true" aria-expanded="false" aria-controls="profileDropdown">
+                            <span class="reference-avatar" id="profileTriggerAvatar">P</span>
+                            <span class="profile-trigger-copy"><strong id="profileTriggerName">Parent</strong><small>Caregiver</small></span>
+                            <span class="theme-chevron" aria-hidden="true">⌄</span>
+                        </button>
+                        <div class="profile-dropdown hidden" id="profileDropdown" role="menu" aria-labelledby="logoutButton">
+                            <div class="profile-dropdown-heading"><strong id="profileMenuUsername">Parent</strong><small>InfantCry account</small></div>
+                            <button type="button" id="profileMenuProfile" class="profile-menu-item" role="menuitem"><span aria-hidden="true">♙</span> My profile</button>
+                            <button type="button" id="profileMenuPassword" class="profile-menu-item" role="menuitem"><span aria-hidden="true">♧</span> Change password</button>
+                            <div class="profile-menu-divider"></div>
+                            <button type="button" id="profileMenuLogout" class="profile-menu-item profile-menu-logout" role="menuitem"><span aria-hidden="true">↪</span> Log out</button>
+                        </div>
                     </div>
+                    <span id="loggedInUser" class="logged-user-value">User</span>
                 </div>
-                <span id="loggedInUser" class="logged-user-value">User</span>
             </div>
         </header>
 
         <div class="app-shell">
             <aside class="app-sidebar" aria-label="User navigation">
-                <a class="sidebar-brand" href="#" data-view-link="home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M4 21h6l3-8 5 16 5-20 4 12h8"/></svg></span><span>InfantCry<small>LISTEN WITH CARE</small></span></a>
+                <a class="sidebar-brand" href="#home" data-view-link="home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M4 21h6l3-8 5 16 5-20 4 12h8"/></svg></span><span>InfantCry<small>LISTEN WITH CARE</small></span></a>
+                <div class="sidebar-section-label">WORKSPACE</div>
                 <nav class="sidebar-nav">
-                    <button type="button" class="sidebar-link is-active" data-view-link="home"><span>⌂</span>Home</button>
-                    <button type="button" class="sidebar-link" data-view-link="analyze"><span>◉</span>Analyze</button>
-                    <button type="button" class="sidebar-link" data-view-link="history"><span>◷</span>History</button>
-                    <button type="button" class="sidebar-link" data-view-link="how"><span>ⓘ</span>How It Works</button>
+                    <button type="button" class="sidebar-link is-active" data-view-link="home"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></span>Overview</button>
+                    <button type="button" class="sidebar-link" data-view-link="analyze"><span aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="4"/><path d="M12 7v10m-3-7v4m6-6v8"/></svg></span>New analysis<i class="nav-shortcut">NEW</i></button>
+                    <button type="button" class="sidebar-link" data-view-link="history"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v15H4zM8 3v4m8-4v4M8 11h8m-8 4h5"/><path d="M4 8h16"/></svg></span>History</button>
                 </nav>
-                <div class="sidebar-bottom"><span class="privacy-shield" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 3 27 7v8c0 7-4.5 11-11 14C9.5 26 5 22 5 15V7Z"/><path d="m11 16 3 3 7-8"/></svg></span><span><strong>Caregiver first</strong><small>Your observations matter alongside every audio insight.</small></span></div>
+                <div class="sidebar-section-label sidebar-section-label-spaced">LEARN & MANAGE</div>
+                <nav class="sidebar-nav">
+                    <button type="button" class="sidebar-link" data-view-link="how"><span aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.3 2.3 0 1 1 3.8 1.7c-1.1.9-1.6 1.2-1.6 2.8M12 17h.01"/></svg></span>How it works</button>
+                    <button type="button" class="sidebar-link" data-view-link="profile"><span aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.3 3.1-5 7-5s6.2 1.7 7 5"/></svg></span>My profile</button>
+                </nav>
+                <div class="sidebar-bottom">
+                    <span class="privacy-shield" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 3 27 7v8c0 7-4.5 11-11 14C9.5 26 5 22 5 15V7Z"/><path d="m11 16 3 3 7-8"/></svg></span>
+                    <span><strong>Care comes first</strong><small>Audio insights support your judgement; they never replace it.</small></span>
+                </div>
+                <div class="sidebar-footer-mark">INFANTCRY <span>•</span> LISTEN WITH CARE</div>
             </aside>
-            <section class="analysis-container">
-            <section class="welcome-hero" data-page-section="home" aria-labelledby="welcomeTitle">
-                <div class="hero-copy">
-                    <span class="eyebrow-pill">INFANT CRY SUPPORT, MADE FOR CAREGIVERS</span>
-                    <h2 id="welcomeTitle">When your baby<br>cries, start by<br><span>listening.</span></h2>
-                    <p>Record a cry or upload a WAV file to explore its audio patterns and view the predicted cry reason.</p>
-                    <div class="hero-action-row"><button type="button" class="hero-cta" id="jumpToAudio"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="9" y="2.5" width="6" height="13" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5m-4 0h8"/></svg> Analyze a cry <span aria-hidden="true">→</span></button><button type="button" class="hero-secondary" data-view-link="how"><span aria-hidden="true">▶</span> How it works</button></div>
-                    <div class="hero-trust"><span class="trust-dot"></span> Cry analysis can suggest patterns; it cannot diagnose the cause of a cry or replace professional medical advice.</div>
-                </div>
-                <div class="hero-art" aria-hidden="true">
-                    <div class="hero-image-wrap watermark-frame" aria-hidden="true">
-                        <img src="img1.jpeg" alt="">
+
+            <section class="analysis-container" id="mainContent" tabindex="-1">
+                <!-- HOME / OVERVIEW -->
+                <section class="home-view" data-page-section="home" aria-labelledby="welcomeTitle">
+                    <div class="home-topline">
+                        <div><span class="section-kicker">CAREGIVER OVERVIEW</span><p class="welcome-date" id="dashboardGreeting">A little space to listen, understand and care.</p></div>
+                        <div class="home-topline-actions"><span class="today-chip"><span></span> YOUR SPACE</span></div>
                     </div>
-                </div>
-            </section>
-            <div class="home-feature-strip" data-page-section="home">
-                <article><span class="feature-icon feature-blue" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M3 17h5l3-9 5 17 5-21 4 13h4"/></svg></span><div><strong>Audio input</strong><small>Record or upload a WAV clip</small></div></article>
-                <article><span class="feature-icon feature-rose" aria-hidden="true">∿</span><div><strong>Pattern analysis</strong><small>Audio is prepared for cry classification</small></div></article>
-                <article><span class="feature-icon feature-green" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M5 8h22M5 16h22M5 24h22"/><circle cx="12" cy="8" r="3"/><circle cx="21" cy="16" r="3"/><circle cx="15" cy="24" r="3"/></svg></span><div><strong>Predicted reason</strong><small>See the category returned by the model</small></div></article>
-            </div>
 
-            <section class="cry-understanding" id="cryUnderstandingSection" data-page-section="home">
-                <div class="cry-understanding-heading">
-                    <div>
-                        <span class="section-kicker">THE INFANTCRY PROCESS</span>
-                        <h2>From audio to <span>a likely reason.</span></h2>
-                        <p>InfantCry takes a WAV recording through an audio-analysis pipeline and displays the predicted cry category returned by the model.</p>
-                    </div>
-                    <div class="wave-art" aria-hidden="true">
-                        <span></span><span></span><span></span><span></span><span></span>
-                        <span></span><span></span><span></span><span></span><span></span>
-                        <span></span><span></span><span></span><span></span><span></span>
-                        <span></span><span></span><span></span><span></span><span></span>
-                        <span></span><span></span><span></span>
-                    </div>
-                </div>
-
-                <div class="cry-topic-grid">
-                    <article class="cry-topic-card">
-                        <span class="cry-topic-icon cry-topic-blue">01</span>
-                        <h3>Provide audio</h3>
-                        <p>Record a cry through the microphone or select a WAV file from your device.</p>
-                    </article>
-                    <article class="cry-topic-card">
-                        <span class="cry-topic-icon cry-topic-pink">02</span>
-                        <h3>Analyze patterns</h3>
-                        <p>The audio-processing pipeline prepares the recording for the cry classifier.</p>
-                    </article>
-                    <article class="cry-topic-card">
-                        <span class="cry-topic-icon cry-topic-green">03</span>
-                        <h3>View the reason</h3>
-                        <p>The result screen displays the predicted cry category returned by the API.</p>
-                    </article>
-                </div>
-
-                <p class="cry-safety-note"><span>ⓘ</span> The predicted category is an exploratory audio result, not a medical diagnosis.</p>
-            </section>
-
-            <section class="analyze-view" data-page-section="analyze">
-            <div class="page-heading" id="audioWorkspace">
-                <span class="section-kicker">YOUR AUDIO WORKSPACE</span>
-                <h2>Bring a little sound into focus.</h2>
-                <p>Choose how you would like to add your baby’s cry. Record a short clip or upload an existing WAV file.</p>
-            </div>
-
-            <div class="audio-input-area">
-
-                <!-- RECORD -->
-                <div class="audio-card">
-                    <div class="card-heading">
-                        <div class="card-symbol">🎙</div>
-                        <div>
-                            <h3>Record a cry</h3>
-                            <p>Capture a short audio sample directly from your device.</p>
+                    <section class="welcome-hero" aria-labelledby="welcomeTitle">
+                        <div class="hero-copy">
+                            <span class="eyebrow-pill"><span class="eyebrow-spark" aria-hidden="true">✦</span> LISTEN WITH CARE</span>
+                            <h2 id="welcomeTitle">When words are little,<br><span>listening matters.</span></h2>
+                            <p>Bring in a short recording. Explore the category the model predicts. Then use that small piece of context alongside everything you notice about your baby.</p>
+                            <div class="hero-action-row"><button type="button" class="hero-cta" id="jumpToAudio"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="9" y="2.5" width="6" height="13" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5m-4 0h8"/></svg> Start an analysis <span aria-hidden="true">→</span></button><button type="button" class="hero-secondary" data-view-link="how"><span aria-hidden="true">◎</span> Understand the process</button></div>
+                            <div class="hero-reassurance"><span class="reassurance-icon" aria-hidden="true">i</span><p>InfantCry suggests an audio category. It cannot diagnose why a baby is crying or assess an emergency.</p></div>
                         </div>
-                    </div>
-
-                    <div class="record-time" id="recordTime">00:00</div>
-
-                    <button type="button" id="recordButton"
-                            class="main-button">Start Recording</button>
-
-                    <span class="small-note">Your recording is prepared as a WAV audio file.</span>
-                </div>
-
-                <!-- UPLOAD -->
-                <div class="audio-card">
-                    <div class="card-heading">
-                        <div class="card-symbol">↑</div>
-                        <div>
-                            <h3>Upload a recording</h3>
-                            <p>Select a WAV recording already saved on your device.</p>
+                        <div class="hero-art" aria-hidden="true">
+                            <div class="hero-art-glow"></div>
+                            <div class="hero-image-wrap watermark-frame"><img class="cradle-art-dark" src="./assets/infant-cradle-watermark.png" alt="">
+                                <img class="cradle-art-light" src="./assets/infant-cradle-watermark-light.png" alt=""></div>
+                            <span class="hero-art-caption">A LITTLE SOUND CAN MEAN A LOT</span>
                         </div>
+                    </section>
+
+                    <section class="start-panel" aria-labelledby="startPanelTitle">
+                        <div class="section-heading-row">
+                            <div><span class="section-kicker">CHOOSE YOUR STARTING POINT</span><h2 id="startPanelTitle">How would you like to add audio?</h2><p>Both options lead to the same review and analysis process.</p></div>
+                            <span class="step-count">01 <i>/</i> 02</span>
+                        </div>
+                        <div class="start-options">
+                            <button type="button" class="start-option start-option-primary" data-view-link="analyze">
+                                <span class="start-option-icon start-mic-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5.5 10.5a6.5 6.5 0 0 0 13 0M12 17v4m-4 0h8"/></svg></span>
+                                <span class="start-option-copy"><strong>Record a new cry</strong><small>Use your device microphone to capture a short clip.</small><em>Open audio workspace <b>↗</b></em></span>
+                                <span class="start-option-arrow" aria-hidden="true">→</span>
+                            </button>
+                            <button type="button" class="start-option" data-view-link="analyze">
+                                <span class="start-option-icon start-upload-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 16V4m-4 4 4-4 4 4"/><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg></span>
+                                <span class="start-option-copy"><strong>Choose a WAV file</strong><small>Use an existing recording saved on your device.</small><em>Choose audio in workspace <b>↗</b></em></span>
+                                <span class="start-option-arrow" aria-hidden="true">→</span>
+                            </button>
+                        </div>
+                    </section>
+
+                    <div class="home-content-grid">
+                        <section class="home-recent-panel" aria-labelledby="recentHomeTitle">
+                            <div class="section-heading-row compact-heading">
+                                <div><span class="section-kicker">PICK UP WHERE YOU LEFT OFF</span><h2 id="recentHomeTitle">Recent listening</h2></div>
+                                <button type="button" class="inline-link" data-view-link="history">View history <span aria-hidden="true">→</span></button>
+                            </div>
+                            <div class="home-recent-list">
+                                <div class="home-recent-empty"><span class="recent-empty-icon" aria-hidden="true">◷</span><div><strong>Your listening history stays in one place</strong><p>Open History to revisit the latest analyses available from your account.</p></div><button type="button" data-view-link="history" aria-label="Open listening history">→</button></div>
+                            </div>
+                        </section>
+
+                        <aside class="recording-guide-panel" aria-labelledby="recordGuideTitle">
+                            <div class="guide-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 20 6v5c0 5-3.3 8.2-8 10-4.7-1.8-8-5-8-10V6z"/><path d="M8 12h8m-4-4v8"/></svg></div>
+                            <span class="section-kicker">A SMALL PREPARATION</span>
+                            <h2 id="recordGuideTitle">A clearer recording starts with a calmer moment.</h2>
+                            <ul class="record-guide-list">
+                                <li><span>01</span> Choose a quieter space when possible.</li>
+                                <li><span>02</span> Keep the device at a safe distance from your baby.</li>
+                                <li><span>03</span> Capture the sound without delaying comfort or care.</li>
+                            </ul>
+                            <p class="guide-footnote">Never leave a baby unattended to make a recording.</p>
+                        </aside>
                     </div>
 
-                    <label for="audioFile" class="upload-button">
-                        Choose WAV File
-                    </label>
+                    <section class="home-expectation-band" aria-label="Important information about InfantCry">
+                        <span class="expectation-mark" aria-hidden="true">✦</span>
+                        <div><strong>Use the result as one small piece of context.</strong><p>A model prediction is not a medical assessment. Check your baby's surroundings and needs, trust your observations, and contact a healthcare professional when you are concerned.</p></div>
+                        <button type="button" class="inline-link" data-view-link="how">What to expect <span aria-hidden="true">→</span></button>
+                    </section>
+                </section>
 
-                    <input type="file" id="audioFile"
-                           accept=".wav,audio/wav,audio/x-wav,audio/wave" hidden>
-
-                    <p class="selected-file" id="selectedFile">
-                        No file selected
-                    </p>
-
-                    <span class="small-note">Supported format: WAV audio</span>
-                </div>
-            </div>
-
-            <!-- AUDIO PREVIEW -->
-            <section class="audio-section hidden" id="audioSection">
-                <div class="audio-section-header">
-                    <div>
-                        <span class="section-title">AUDIO</span>
-                        <h3 id="audioName">Audio selected</h3>
+                <!-- GUIDED AUDIO WORKSPACE -->
+                <section class="secondary-view analyze-view" data-page-section="analyze" aria-labelledby="audioTitle">
+                    <div class="page-heading analyze-page-heading" id="audioWorkspace">
+                        <div><span class="section-kicker">AUDIO WORKSPACE / NEW ANALYSIS</span><h2 id="audioTitle">Let's listen to the recording.</h2><p>Record a short clip or bring in a WAV file. You can review it before sending it for analysis.</p></div>
+                        <span class="workspace-badge"><span></span> YOUR WORKSPACE</span>
                     </div>
 
-                    <button type="button" id="removeAudio"
-                            class="text-button">Remove</button>
-                </div>
-
-                <audio id="audioPlayer" controls></audio>
-            </section>
-
-            <!-- ANALYZE -->
-            <div class="analyze-area">
-                <button type="button" id="analyzeButton"
-                        class="analyze-button" disabled>Analyze</button>
-                <p id="analyzeMessage">
-                    Record or upload a WAV file to continue.
-                </p>
-            </div>
-
-            <!-- LOADING -->
-            <section class="loading-box hidden" id="loadingBox">
-                <div class="loading-spinner"></div>
-                <h3>Analyzing audio</h3>
-                <p>Please wait while the model processes the recording.</p>
-            </section>
-
-            <!-- RESULT -->
-            <section class="result-box hidden" id="resultBox">
-                <span class="section-title">RESULT</span>
-                <h3>Your analysis overview</h3>
-
-                <div class="prediction">
-                    <div class="prediction-reason">
-                        <span class="prediction-label">PREDICTED CRY REASON</span>
-                        <h2 id="predictionText">Your result will appear here</h2>
-                    </div>
-                </div>
-
-                <!-- FEEDBACK -->
-                <div class="feedback-box">
-                    <h3>Did this insight feel helpful?</h3>
-                    <p>Your feedback helps the team understand how useful the result was.</p>
-
-                    <div class="feedback-buttons">
-                        <button type="button" id="feedbackYes"
-                                class="feedback-button">Yes</button>
-                        <button type="button" id="feedbackNo"
-                                class="feedback-button">No</button>
+                    <div class="analysis-journey" aria-label="The analysis journey">
+                        <div class="journey-item"><span>01</span><div><strong>Add audio</strong><small>Record or upload</small></div></div>
+                        <div class="journey-divider" aria-hidden="true"></div>
+                        <div class="journey-item"><span>02</span><div><strong>Review clip</strong><small>Listen before sending</small></div></div>
+                        <div class="journey-divider" aria-hidden="true"></div>
+                        <div class="journey-item"><span>03</span><div><strong>Explore result</strong><small>Model prediction</small></div></div>
+                        <div class="journey-divider" aria-hidden="true"></div>
+                        <div class="journey-item"><span>04</span><div><strong>Share feedback</strong><small>Optional response</small></div></div>
                     </div>
 
-                    <div class="feedback-form hidden" id="feedbackYesForm">
-                        <label for="feedbackYesText">
-                            What additional thing would make this better?
-                        </label>
-                        <textarea id="feedbackYesText" rows="4"
-                                  placeholder="Tell us what could improve the experience..."></textarea>
-                        <button type="button" id="submitYesFeedback"
-                                class="submit-feedback">Submit Feedback</button>
+                    <div class="audio-input-area">
+                        <article class="audio-card record-card" id="recordCard">
+                            <div class="audio-card-topline"><span class="audio-card-index">OPTION 01</span><span class="audio-card-status"><span></span> MICROPHONE</span></div>
+                            <div class="card-heading"><div class="card-symbol record-symbol"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5.5 10.5a6.5 6.5 0 0 0 13 0M12 17v4m-4 0h8"/></svg></div><div><h3>Record a cry</h3><p>Capture a short sample with your device microphone.</p></div></div>
+                            <div class="recording-display"><span class="recording-ring" aria-hidden="true"><span></span></span><div><span class="recording-label">MICROPHONE CAPTURE</span><div class="record-time" id="recordTime" aria-label="Recording duration" aria-live="off">00:00</div></div></div>
+                            <button type="button" id="recordButton" class="main-button" aria-pressed="false" aria-controls="recordTime"><span class="record-button-dot" aria-hidden="true"></span> Start recording</button>
+                            <p class="audio-card-footnote">A recording is prepared as a WAV file before analysis. Maximum recording time: 60 seconds.</p>
+                        </article>
+
+                        <article class="audio-card upload-card">
+                            <div class="audio-card-topline"><span class="audio-card-index">OPTION 02</span><span class="audio-card-status"><span></span> FILE UPLOAD</span></div>
+                            <div class="card-heading"><div class="card-symbol upload-symbol"><svg viewBox="0 0 24 24"><path d="M12 16V4m-4 4 4-4 4 4"/><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg></div><div><h3>Upload a WAV file</h3><p>Choose an existing recording from your device.</p></div></div>
+                            <label for="audioFile" class="upload-file-picker">
+                                <span class="file-picker-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 16V4m-4 4 4-4 4 4"/><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg></span>
+                                <strong>Choose a WAV recording</strong><small>Select a file from your device</small>
+                                <span class="file-picker-format">WAV FORMAT <i>•</i> MAX 10 MB</span>
+                            </label>
+                            <input class="visually-hidden" type="file" id="audioFile" accept=".wav,audio/wav,audio/x-wav,audio/wave">
+                            <p class="selected-file" id="selectedFile" aria-live="polite">No file selected</p>
+                            <p class="audio-card-footnote">Only valid WAV audio is accepted. Your file is checked before it is selected.</p>
+                        </article>
                     </div>
 
-                    <div class="feedback-form hidden" id="feedbackNoForm">
-                        <label for="feedbackNoText">
-                            Sorry about that. How could we make it better?
-                            What caused you to click No?
-                        </label>
-                        <textarea id="feedbackNoText" rows="4"
-                                  placeholder="Tell us what went wrong..."></textarea>
-                        <button type="button" id="submitNoFeedback"
-                                class="submit-feedback">Submit Feedback</button>
+                    <section class="audio-section hidden" id="audioSection" aria-label="Selected audio preview">
+                        <div class="audio-section-header"><div><span class="section-title">STEP 02 / REVIEW YOUR CLIP</span><h3 id="audioName">Audio selected</h3><p class="audio-review-subtitle">Listen once before you send the clip for analysis.</p></div><button type="button" id="removeAudio" class="text-button" disabled>Remove clip</button></div>
+                        <div class="audio-preview-shell"><span class="audio-preview-icon" aria-hidden="true">♫</span><audio id="audioPlayer" controls preload="metadata" aria-label="Preview selected infant cry audio"></audio></div>
+                    </section>
+
+                    <div class="analyze-action-panel">
+                        <div class="analyze-action-copy"><span class="action-lock-icon" aria-hidden="true">⌁</span><div><strong>Ready to explore the audio?</strong><p id="analyzeMessage" role="status" aria-live="polite">Add a recording or choose a WAV file to continue.</p></div></div>
+                        <button type="button" id="analyzeButton" class="analyze-button" disabled>Analyze audio <span aria-hidden="true">→</span></button>
                     </div>
 
-                    <p class="feedback-success hidden" id="feedbackSuccess">
-                        Thank you for your feedback.
-                    </p>
-                </div>
-            </section>
-            </section><!-- /.analyze-view -->
+                    <section class="loading-box hidden" id="loadingBox" role="status" aria-live="polite" aria-atomic="true">
+                        <div class="loading-visual" aria-hidden="true">
+                            <div class="loading-visual-halo"></div>
+                            <div class="loading-orbit loading-orbit--outer"><span></span></div>
+                            <div class="loading-orbit loading-orbit--middle"><span></span></div>
+                            <div class="loading-orbit loading-orbit--inner"><span></span></div>
+                            <div class="loading-center-halo"></div>
+                            <div class="loading-center">
+                                <svg viewBox="0 0 40 40" focusable="false"><path d="M3 21h6l3-8 5 16 5-20 4 12h8"/></svg>
+                            </div>
+                            <span class="loading-particle loading-particle--one"></span>
+                            <span class="loading-particle loading-particle--two"></span>
+                            <span class="loading-particle loading-particle--three"></span>
+                        </div>
+                        <div class="loading-content">
+                            <div class="loading-status-line"><span class="loading-live-indicator"></span><span>ANALYSIS IN PROGRESS</span><i aria-hidden="true"></i><span>PLEASE WAIT</span></div>
+                            <span class="section-kicker">INFANTCRY SOUND EXPLORATION</span>
+                            <h3>A moment while the pattern comes into focus.</h3>
+                            <p>Your recording is being processed. The predicted cry category will appear here as soon as the analysis is complete.</p>
+                            <div class="loading-progress-track" aria-hidden="true"><span></span></div>
+                            <div class="loading-progress-meta"><span>Keep this page open while we prepare your result.</span><span>PROCESSING</span></div>
+                        </div>
+                        <div class="loading-trust-note"><span class="loading-trust-icon" aria-hidden="true">i</span><p><strong>A gentle reminder</strong><span>A model prediction is one piece of context. Your observations and your baby's needs come first.</span></p></div>
+                    </section>
 
-            <section class="secondary-view hidden" data-page-section="history">
-                <div class="page-heading"><span class="section-kicker">YOUR ACTIVITY</span><h2>Your recent listening history</h2><p>Keep track of the recordings you have explored during this session.</p></div>
-                <div class="history-list" id="sessionHistory"><article class="empty-state"><span class="empty-state-icon">◷</span><h3>No analyses yet</h3><p>Once you analyze a recording, your recent result will be listed here.</p><button type="button" class="hero-cta" data-view-link="analyze">Analyze a cry ↗</button></article></div>
-            </section>
-            <section class="secondary-view hidden" data-page-section="how">
-                <div class="page-heading"><span class="section-kicker">THE PROCESS</span><h2>From a little sound to a clearer next step.</h2><p>InfantCry helps you explore an audio sample and consider possible patterns. You remain the most important observer of your baby.</p></div>
-                <div class="steps-list"><article><span>01</span><div><h3>Record or upload</h3><p>Record audio using your microphone or select a valid WAV file.</p></div></article><article><span>02</span><div><h3>Analyze the audio</h3><p>The audio is sent through the existing analysis workflow for processing.</p></div></article><article><span>03</span><div><h3>Review the result</h3><p>Review the predicted cry reason, then share feedback.</p></div></article></div>
-                <button type="button" class="hero-cta" data-view-link="analyze">Start an analysis ↗</button>
-            </section>
-            <section class="secondary-view hidden" data-page-section="profile">
-                <div class="page-heading"><span class="section-kicker">YOUR ACCOUNT</span><h2>Your caregiver space.</h2><p>View the basic account details for this session.</p></div>
-                <article class="profile-card"><div class="profile-avatar" id="profileAvatar">U</div><div><span class="profile-role">SIGNED-IN USER</span><h3 id="profileName">User</h3><p>InfantCry account</p></div></article>
-                <div class="profile-settings"><div><span>Account name</span><strong id="profileUsername">User</strong></div><div><span>Account type</span><strong>Caregiver</strong></div></div>
-            </section>
-            </section><!-- /.analysis-container -->
-        </div><!-- /.app-shell -->
+                    <section class="result-box hidden" id="resultBox" aria-live="polite">
+                        <div class="result-heading"><span class="section-kicker">STEP 03 / MODEL OUTPUT</span><span class="result-state-pill"><span></span> ANALYSIS COMPLETE</span></div>
+                        <div class="result-main"><div class="result-emblem" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12h3l2-6 4 12 3-9 2 3h4"/></svg></div><div class="prediction-reason"><span class="prediction-label">PREDICTED CRY CATEGORY</span><h2 id="predictionText">Your result will appear here</h2><p>The category shown above is the model's prediction for this audio sample.</p></div></div>
+                        <div class="result-caution"><span aria-hidden="true">i</span><p>This is an exploratory audio prediction, not a diagnosis. It may not reflect the reason your baby is crying. Consider the full situation and seek professional advice when concerned.</p></div>
+                        <div class="feedback-box">
+                            <div class="feedback-heading"><span class="section-kicker">STEP 04 / YOUR FEEDBACK</span><h3>Was this result useful to you?</h3><p>Your response helps the team understand how useful the prediction was.</p></div>
+                            <div class="feedback-buttons"><button type="button" id="feedbackYes" class="feedback-button" aria-pressed="false"><span aria-hidden="true">✓</span> Yes, it helped</button><button type="button" id="feedbackNo" class="feedback-button" aria-pressed="false"><span aria-hidden="true">↗</span> Not really</button></div>
+                            <div class="feedback-form hidden" id="feedbackYesForm"><label for="feedbackYesText">What else would make this result more useful? <span>Optional</span></label><textarea id="feedbackYesText" rows="3" placeholder="Share anything that could improve the experience..."></textarea><button type="button" id="submitYesFeedback" class="submit-feedback">Send feedback <span aria-hidden="true">→</span></button></div>
+                            <div class="feedback-form hidden" id="feedbackNoForm"><label for="feedbackNoText">What felt missing or unclear? <span>Optional</span></label><textarea id="feedbackNoText" rows="3" placeholder="Tell us what did not work for you..."></textarea><button type="button" id="submitNoFeedback" class="submit-feedback">Send feedback <span aria-hidden="true">→</span></button></div>
+                            <p class="feedback-success hidden" id="feedbackSuccess"><span aria-hidden="true">✓</span> Thank you. Your feedback has been recorded.</p>
+                        </div>
+                    </section>
+                </section>
 
-        <footer class="footer">
-            <span>InfantCry</span>
-            <span>Analysis of Infant Cry</span>
-        </footer>
+                <!-- SERVER-BACKED HISTORY -->
+                <section class="secondary-view history-view" data-page-section="history" aria-labelledby="historyTitle">
+                    <div class="page-heading history-page-heading"><div><span class="section-kicker">YOUR LISTENING JOURNEY</span><h2 id="historyTitle">Your analysis history</h2><p>Return to previous predictions and see when each recording was analyzed.</p></div><button type="button" class="hero-cta compact-cta" data-view-link="analyze">＋ New analysis</button></div>
+                    <div class="history-toolbar"><span class="history-count">Your latest available analyses</span><span class="history-sort-note">Newest first · Account history</span></div>
+                    <div class="history-list" id="sessionHistory"><article class="empty-state"><span class="empty-state-icon">◷</span><h3>No analyses yet</h3><p>Once you analyze a recording, your recent result will be listed here.</p><button type="button" class="hero-cta" data-view-link="analyze">Start your first analysis ↗</button></article></div>
+                    <p class="history-footnote">History is loaded from your signed-in InfantCry account. If the server is unavailable, the most recently cached list may be shown.</p>
+                </section>
+
+                <!-- EXPLANATION / CARE CONTEXT -->
+                <section class="secondary-view how-view" data-page-section="how" aria-labelledby="howTitle">
+                    <div class="page-heading"><span class="section-kicker">A CLEAR, HONEST PROCESS</span><h2 id="howTitle">What happens to a recording?</h2><p>InfantCry turns a short audio sample into a model prediction. You stay in control at every step.</p></div>
+                    <div class="how-flow">
+                        <article class="how-step-card"><span class="how-step-number">01</span><div class="how-step-icon"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5.5 10.5a6.5 6.5 0 0 0 13 0M12 17v4m-4 0h8"/></svg></div><h3>Bring in a sound</h3><p>Record a short sample with your microphone or choose an existing WAV file from your device.</p><span class="how-step-tag">YOUR AUDIO</span></article>
+                        <article class="how-step-card"><span class="how-step-number">02</span><div class="how-step-icon"><svg viewBox="0 0 24 24"><path d="M3 12h3l2-6 4 12 3-9 2 3h4"/></svg></div><h3>Review and prepare</h3><p>Listen to the selected clip. Recording audio is converted to WAV before it is submitted.</p><span class="how-step-tag">AUDIO PREPARATION</span></article>
+                        <article class="how-step-card"><span class="how-step-number">03</span><div class="how-step-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg></div><h3>Explore the prediction</h3><p>The existing model analyzes the audio and returns a predicted cry category for you to review.</p><span class="how-step-tag">MODEL OUTPUT</span></article>
+                        <article class="how-step-card"><span class="how-step-number">04</span><div class="how-step-icon"><svg viewBox="0 0 24 24"><path d="M20 11.5a8 8 0 0 1-12.9 6.3L4 20l.9-4A8 8 0 1 1 20 11.5Z"/><path d="M8 12h8m-4-4v8"/></svg></div><h3>Share your feedback</h3><p>Tell us whether the result was useful. Comments are optional.</p><span class="how-step-tag">YOUR RESPONSE</span></article>
+                    </div>
+                    <div class="how-limits-panel"><div class="limits-icon" aria-hidden="true">!</div><div><span class="section-kicker">IMPORTANT TO KNOW</span><h3>A prediction is not an explanation of your baby's health.</h3><p>InfantCry cannot diagnose illness, pain, hunger, discomfort, or an emergency. Different needs can sound similar. Check your baby's cues and surroundings, and contact a qualified healthcare professional whenever you are worried. Do not delay urgent care to record or analyze a cry.</p></div></div>
+                    <div class="how-bottom-action"><div><strong>Ready to bring in a recording?</strong><p>You can review the audio before submitting it.</p></div><button type="button" class="hero-cta" data-view-link="analyze">Start an analysis <span aria-hidden="true">→</span></button></div>
+                </section>
+
+                <!-- PROFILE -->
+                <section class="secondary-view profile-view" data-page-section="profile" aria-labelledby="profileTitle">
+                    <div class="page-heading"><span class="section-kicker">ACCOUNT DETAILS</span><h2 id="profileTitle">Your caregiver profile</h2><p>Basic details for the account currently signed in to InfantCry.</p></div>
+                    <article class="profile-overview-card"><div class="profile-avatar profile-avatar-large" id="profileAvatar">U</div><div class="profile-overview-copy"><span class="profile-role">SIGNED-IN ACCOUNT</span><h3 id="profileName">User</h3><p>Your signed-in caregiver account</p></div><span class="account-type-pill">Caregiver</span></article>
+                    <div class="profile-detail-grid"><article class="profile-detail-card"><span class="section-kicker">ACCOUNT NAME</span><strong id="profileUsername">User</strong><p>The display name is based on the signed-in email address.</p></article><article class="profile-detail-card"><span class="section-kicker">ACCOUNT TYPE</span><strong>Caregiver</strong><p>This workspace is designed for recording and reviewing infant cry audio.</p></article><article class="profile-detail-card"><span class="section-kicker">PREFERENCES</span><strong>Appearance preference</strong><p>Use the theme switcher in the top bar to change the appearance.</p></article></div>
+                    <div class="profile-account-actions"><div><strong>Account access</strong><p>Use the account menu in the top bar to sign out or view account actions.</p></div><span class="account-menu-hint" aria-hidden="true">↗</span></div>
+                </section>
+            </section>
+        </div>
+
+        <footer class="footer"><span>InfantCry <i>•</i> Listen with care</span><span>Model predictions are exploratory, not medical advice.</span></footer>
     </main>
 
-
     <dialog class="account-dialog" id="passwordChangeDialog" aria-labelledby="passwordDialogTitle">
-        <div class="account-dialog-content">
-            <span class="section-kicker">ACCOUNT SECURITY</span>
-            <h2 id="passwordDialogTitle">Change password</h2>
-            <p>Password changes are not available through the current Express API. This option can be connected when an authenticated password-update endpoint is added.</p>
-            <button type="button" class="hero-cta" id="passwordDialogClose">Got it</button>
-        </div>
+        <div class="account-dialog-content"><span class="section-kicker">ACCOUNT SECURITY</span><h2 id="passwordDialogTitle">Change password</h2><p>Password changes are not available through the current backend API yet. This option is informational and does not change your password.</p><button type="button" class="hero-cta" id="passwordDialogClose">Got it</button></div>
     </dialog>
 
-    <!-- ADMIN DASHBOARD -->
-    <main class="analysis-page hidden" id="adminPage">
-
-        <header class="top-bar">
-            <div class="brand-small">
-                <h1>InfantCry</h1>
-                <p>Administration</p>
-            </div>
-
-            <div class="user-area">
-                <span id="loggedInAdmin">Admin</span>
-                <button type="button" id="adminLogoutButton"
-                        class="logout-button">Logout</button>
-            </div>
+    <!-- ADMIN WORKSPACE -->
+    <main class="analysis-page admin-page hidden" id="adminPage">
+        <header class="top-bar admin-topbar">
+            <div class="brand-small"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M4 21h6l3-8 5 16 5-20 4 12h8"/></svg></span><span><h1>InfantCry</h1><p>Administration workspace</p></span></div>
+            <div class="user-area"><span id="loggedInAdmin">Admin</span><button type="button" id="adminLogoutButton" class="logout-button">Log out</button></div>
         </header>
-
-        <nav class="admin-nav-strip" aria-label="Admin navigation"><span class="admin-nav-current">▦ &nbsp; Dashboard overview</span><span class="admin-nav-note">System analytics</span></nav>
+        <nav class="admin-nav-strip" aria-label="Admin navigation"><span class="admin-nav-current"><span class="admin-nav-indicator"></span> SYSTEM OVERVIEW</span><span class="admin-nav-note">API-reported operational data</span></nav>
         <section class="analysis-container admin-container">
-            <div class="page-heading">
-                <span class="section-kicker">SYSTEM OVERVIEW</span><h2>Admin Dashboard</h2>
-                <p>A clear operational view of platform activity, feedback patterns and model connectivity.</p>
-            </div>
-
-            <!-- SUMMARY CARDS -->
+            <div class="admin-heading-row"><div class="page-heading"><span class="section-kicker">OPERATIONS / ANALYTICS</span><h2>Platform overview</h2><p>Monitor analysis activity, prediction distribution, feedback and model configuration.</p></div><div class="admin-heading-aside"><span class="admin-heading-icon" aria-hidden="true">⌘</span><span>Administrator workspace</span></div></div>
             <div class="admin-stats">
-                <article class="admin-stat-card">
-                    <p>Total entries</p>
-                    <h2 id="totalEntries">—</h2>
-                    <span>Awaiting API data</span>
-                </article>
-
-                <article class="admin-stat-card">
-                    <p>Model status</p>
-                    <h2 id="modelStatus">Not connected</h2>
-                    <span>Awaiting API data</span>
-                </article>
-
-                <article class="admin-stat-card">
-                    <p>Recent activity</p>
-                    <h2 id="recentEntryCount">—</h2>
-                    <span>Awaiting API data</span>
-                </article>
+                <article class="admin-stat-card admin-stat-primary"><div class="admin-stat-top"><span class="admin-stat-icon">▤</span><span class="admin-stat-label">TOTAL ANALYSES</span></div><h2 id="totalEntries">—</h2><span>Analyses recorded</span></article>
+                <article class="admin-stat-card"><div class="admin-stat-top"><span class="admin-stat-icon">◈</span><span class="admin-stat-label">MODEL STATUS</span></div><h2 id="modelStatus">Not connected</h2><span>Waiting for configuration data</span></article>
+                <article class="admin-stat-card"><div class="admin-stat-top"><span class="admin-stat-icon">◷</span><span class="admin-stat-label">RECENT ACTIVITY</span></div><h2 id="recentEntryCount">—</h2><span>Entries in the last 24 hours</span></article>
             </div>
-
-            <!-- ADMIN ANALYTICS CHARTS -->
             <section class="admin-charts-grid" aria-label="Prediction and feedback charts">
-                <article class="admin-panel admin-chart-panel">
-                    <div class="admin-panel-heading">
-                        <div>
-                            <h3>Yes vs No feedback</h3>
-                            <p>How users rated their analysis results.</p>
-                        </div>
-                    </div>
-                    <div class="admin-chart-wrap admin-pie-chart-wrap">
-                        <canvas id="feedbackChart" role="img" aria-label="Pie chart showing Yes and No feedback counts"></canvas>
-                    </div>
-                    <p class="admin-data-notice" id="feedbackChartNotice" aria-live="polite">Waiting for feedback data.</p>
-                </article>
-
-                <article class="admin-panel admin-chart-panel">
-                    <div class="admin-panel-heading">
-                        <div>
-                            <h3>Predictions by class</h3>
-                            <p>Number of analyses assigned to each predicted class.</p>
-                        </div>
-                    </div>
-                    <div class="admin-chart-wrap admin-bar-chart-wrap">
-                        <canvas id="predictionClassChart" role="img" aria-label="Bar chart showing prediction counts for each class"></canvas>
-                    </div>
-                    <p class="admin-data-notice" id="predictionChartNotice" aria-live="polite">Waiting for prediction data.</p>
-                </article>
+                <article class="admin-panel admin-chart-panel"><div class="admin-panel-heading"><div><span class="section-kicker">USER RESPONSE</span><h3>Helpful or not helpful</h3><p>How users rated their analysis results.</p></div></div><div class="admin-chart-wrap admin-pie-chart-wrap"><canvas id="feedbackChart" role="img" aria-label="Pie chart showing Yes and No feedback counts"></canvas></div><p class="admin-data-notice" id="feedbackChartNotice" role="status" aria-live="polite">Waiting for feedback data.</p></article>
+                <article class="admin-panel admin-chart-panel"><div class="admin-panel-heading"><div><span class="section-kicker">MODEL OUTPUT</span><h3>Predictions by class</h3><p>Number of analyses assigned to each predicted class.</p></div></div><div class="admin-chart-wrap admin-bar-chart-wrap"><canvas id="predictionClassChart" role="img" aria-label="Bar chart showing prediction counts for each class"></canvas></div><p class="admin-data-notice" id="predictionChartNotice" role="status" aria-live="polite">Waiting for prediction data.</p></article>
             </section>
-
-            <!-- RECENT ENTRIES -->
-            <section class="admin-panel">
-                <div class="admin-panel-heading">
-                    <div>
-                        <h3>Recent user entries</h3>
-                        <p>Latest analysis activity recorded by the system.</p>
-                    </div>
-                    <button type="button" id="refreshEntriesButton"
-                            class="text-button">Refresh</button>
-                </div>
-
-                <p class="admin-data-notice" id="entriesDataNotice">
-                    Placeholder data — waiting for backend connection.
-                </p>
-
-                <div class="admin-table-wrap">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Entry ID</th>
-                                <th>User</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="recentEntriesBody">
-                            <tr>
-                                <td colspan="4">No backend data available.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- MODEL CONFIGURATION -->
-            <section class="admin-panel">
-                <h3>Model configuration</h3>
-                <p>Model details will be retrieved from the backend.</p>
-
-                <div class="model-config-grid">
-                    <div>
-                        <span>Model name</span>
-                        <strong id="modelName">Not configured</strong>
-                    </div>
-                    <div>
-                        <span>Model version</span>
-                        <strong id="modelVersion">—</strong>
-                    </div>
-                    <div>
-                        <span>Input format</span>
-                        <strong>WAV audio</strong>
-                    </div>
-                    <div>
-                        <span>API status</span>
-                        <strong id="modelApiStatus">Not connected</strong>
-                    </div>
-                </div>
-            </section>
-
-            <!-- FEEDBACK OVERVIEW -->
-            <section class="admin-panel">
-                <h3>User feedback</h3>
-                <p>Feedback submitted after predictions will appear here.</p>
-
-                <p class="admin-data-notice" id="feedbackDataNotice">
-                    Placeholder data — waiting for backend connection.
-                </p>
-
-                <section class="admin-card" id="momentInfoPanel" hidden aria-live="polite"><h3 id="momentInfoTitle">Cry-care reminder</h3><p id="momentInfoText"></p></section>
-                <div id="adminFeedbackList">
-                    No feedback data available.
-                </div>
-            </section>
-
-            <p class="admin-api-message" id="adminApiMessage">
-                Admin data is currently using placeholders.
-            </p>
+            <section class="admin-panel"><div class="admin-panel-heading"><div><span class="section-kicker">ACTIVITY LOG</span><h3>Recent analysis entries</h3><p>Latest analysis activity recorded by the system.</p></div><button type="button" id="refreshEntriesButton" class="refresh-button"><span aria-hidden="true">↻</span> Refresh data</button></div><p class="admin-data-notice" id="entriesDataNotice" role="status" aria-live="polite">Waiting for backend connection.</p><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Entry ID</th><th>User</th><th>Date</th><th>Prediction / confidence</th></tr></thead><tbody id="recentEntriesBody"><tr><td colspan="4">No backend data available.</td></tr></tbody></table></div></section>
+            <section class="admin-panel"><div class="admin-panel-heading"><div><span class="section-kicker">MODEL DETAILS</span><h3>Model configuration</h3><p>Configuration values supplied by the backend.</p></div><span class="config-chip">READ ONLY</span></div><div class="model-config-grid"><div><span>Model name</span><strong id="modelName">Not configured</strong></div><div><span>Checkpoint / version</span><strong id="modelVersion">—</strong></div><div><span>Input format</span><strong>WAV audio</strong></div><div><span>Config API</span><strong id="modelApiStatus">Not connected</strong></div><div class="model-classes-item"><span>Model classes</span><strong id="modelClasses">—</strong></div></div></section>
+            <section class="admin-panel"><div class="admin-panel-heading"><div><span class="section-kicker">CAREGIVER RESPONSE</span><h3>User feedback</h3><p>Comments and helpfulness responses submitted after predictions.</p></div></div><p class="admin-data-notice" id="feedbackDataNotice" role="status" aria-live="polite">Waiting for backend feedback.</p><section class="admin-card" id="momentInfoPanel" hidden aria-live="polite"><h3 id="momentInfoTitle">Cry-care reminder</h3><p id="momentInfoText"></p></section><div id="adminFeedbackList">No feedback data available.</div></section>
+            <p class="admin-api-message" id="adminApiMessage" role="status" aria-live="polite">Admin data is currently waiting for the backend.</p>
         </section>
-
-        <footer class="footer">
-            <span>InfantCry</span>
-            <span>Admin Dashboard</span>
-        </footer>
+        <footer class="footer"><span>InfantCry <i>•</i> Administration</span><span>Live data is supplied by the connected API.</span></footer>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.6.1/dist/chart.umd.min.js"></script>
-    <script src="script-2.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
