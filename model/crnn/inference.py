@@ -1,11 +1,16 @@
 import json
 from pathlib import Path
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+MODEL_PATH = PROJECT_ROOT / "model" / "crnn_semantic_weighted_no_aug_best.pth"
+CONFIG_PATH = PROJECT_ROOT / "model" / "preprocessing_config_semantic.json"
+
 import librosa
 import numpy as np
 import torch
 
-from model import CRNN
+from model.model import CRNN
 
 SR, N_FFT, HOP, N_MELS = 16000, 1024, 256, 80
 FMIN, FMAX, DURATION = 20, 8000, 7
@@ -95,18 +100,18 @@ class CryInference:
         }
 
 
-def load_inference_model(checkpoint_path="model/crnn_semantic_weighted_no_aug_best.pth",config_path="processed/preprocessing_config_semantic.json",device=None,):
+def load_inference_model(checkpoint_path="model/crnn_semantic_weighted_no_aug_best.pth",config_path="model/preprocessing_config_semantic.json",device=None,):
     return CryInference(checkpoint_path, config_path, device)
 
 
 def predict_cry(audio_path, inference, top_k=5):
     return inference.predict_cry(audio_path, top_k=top_k)
 
-
+"""
 crymodel = load_inference_model()
 result = predict_cry("model/baby-crying-01.wav", inference=crymodel)
 print(result)
-"""
+
 Usage:
 cry_model = load_inference_model()
 
