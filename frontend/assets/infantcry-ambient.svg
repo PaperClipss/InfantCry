@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200" fill="none">
+  <defs>
+    <linearGradient id="orbitBlue" x1="1020" y1="140" x2="1510" y2="1040" gradientUnits="userSpaceOnUse"><stop stop-color="#8FC5E7"/><stop offset=".52" stop-color="#6D9CC4"/><stop offset="1" stop-color="#A9C5D8"/></linearGradient>
+    <linearGradient id="orbitGold" x1="850" y1="220" x2="1480" y2="870" gradientUnits="userSpaceOnUse"><stop stop-color="#E9C3A3"/><stop offset="1" stop-color="#B98263"/></linearGradient>
+    <linearGradient id="soundLine" x1="0" y1="780" x2="940" y2="1120" gradientUnits="userSpaceOnUse"><stop stop-color="#78B6D5"/><stop offset="1" stop-color="#D1A17E"/></linearGradient>
+  </defs>
+  <g opacity=".62" stroke="url(#orbitBlue)" stroke-width="1.15">
+    <circle cx="1190" cy="530" r="300" opacity=".34"/>
+    <circle cx="1190" cy="530" r="362" opacity=".22"/>
+    <circle cx="1190" cy="530" r="430" opacity=".14"/>
+    <path d="M900 530c0-160 130-290 290-290s290 130 290 290-130 290-290 290" opacity=".26"/>
+    <path d="M1018 238c-74 78-119 181-119 294 0 113 45 216 119 294" opacity=".2"/>
+  </g>
+  <g stroke="url(#orbitGold)" stroke-width="1.25" opacity=".42">
+    <path d="M1000 295c94-113 244-160 384-113"/>
+    <path d="M1035 760c112 86 270 103 398 31"/>
+    <path d="M1360 255c57 31 103 76 136 131" opacity=".7"/>
+    <path d="M1460 710c-34 70-94 127-167 161" opacity=".7"/>
+  </g>
+  <g stroke="#C9A98F" stroke-width="1.2" opacity=".45" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M1430 92c-18 85-5 164 43 236 45 66 61 127 46 183"/>
+    <path d="M1450 172c-40-4-69-25-87-63 42-1 70 20 87 63Z"/>
+    <path d="M1469 224c40-18 68-47 83-88-44 13-72 42-83 88Z"/>
+    <path d="M1488 286c-39-1-70-18-93-52 43-5 75 12 93 52Z"/>
+    <path d="M1502 350c36-22 59-55 67-98-41 17-63 49-67 98Z"/>
+    <path d="M1505 412c-35 6-65-5-91-34 39-12 70 0 91 34Z"/>
+  </g>
+  <g stroke="url(#soundLine)" stroke-width="1.15" opacity=".3">
+    <path d="M0 890c170-80 280-80 410 0s240 80 360 0 230-80 350 0"/>
+    <path d="M0 930c170-80 280-80 410 0s240 80 360 0 230-80 350 0" opacity=".7"/>
+    <path d="M0 970c170-80 280-80 410 0s240 80 360 0 230-80 350 0" opacity=".45"/>
+  </g>
+  <g fill="#E6C5A7" opacity=".74">
+    <circle cx="1010" cy="144" r="2"/><circle cx="1324" cy="170" r="1.6"/><circle cx="1510" cy="540" r="1.8"/><circle cx="890" cy="700" r="1.5"/><circle cx="1105" cy="892" r="1.6"/><circle cx="710" cy="380" r="1.4"/>
+  </g>
+  <g stroke="#E6C5A7" stroke-width="1.1" opacity=".56" stroke-linecap="round">
+    <path d="M1195 115v15m-7.5-7.5h15"/><path d="M1540 250v12m-6-6h12"/><path d="M860 470v12m-6-6h12"/>
+    <path d="M1360 900v14m-7-7h14"/>
+  </g>
+</svg>

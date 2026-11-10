@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1200" viewBox="0 0 1920 1200" fill="none">
+<defs>
+  <radialGradient id="blueMist" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1515 315) rotate(90) scale(510 690)">
+    <stop stop-color="#6EA9D0" stop-opacity=".34"/><stop offset=".48" stop-color="#3C779A" stop-opacity=".13"/><stop offset="1" stop-color="#17364A" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="warmMist" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1390 745) rotate(90) scale(410 520)">
+    <stop stop-color="#DCA77F" stop-opacity=".30"/><stop offset=".5" stop-color="#B67F64" stop-opacity=".11"/><stop offset="1" stop-color="#A26D5C" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="tealMist" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(280 900) rotate(90) scale(390 520)">
+    <stop stop-color="#5EAAA8" stop-opacity=".17"/><stop offset="1" stop-color="#356F79" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="soundLine" x1="110" y1="0" x2="1800" y2="0" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#7FB8D5" stop-opacity="0"/><stop offset=".32" stop-color="#7FB8D5" stop-opacity=".25"/><stop offset=".72" stop-color="#D7B18F" stop-opacity=".28"/><stop offset="1" stop-color="#D7B18F" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient id="orbitLine" x1="970" y1="100" x2="1770" y2="1050" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#8CC2DE" stop-opacity=".42"/><stop offset=".55" stop-color="#8CC2DE" stop-opacity=".10"/><stop offset="1" stop-color="#D4A987" stop-opacity=".26"/>
+  </linearGradient>
+  <linearGradient id="leafLine" x1="1670" y1="120" x2="1800" y2="750" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#D7B18F" stop-opacity=".44"/><stop offset="1" stop-color="#7CAFC2" stop-opacity=".12"/>
+  </linearGradient>
+  <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="52"/></filter>
+  <filter id="tinyGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="5"/></filter>
+  <pattern id="grain" width="140" height="140" patternUnits="userSpaceOnUse">
+    <circle cx="12" cy="18" r=".7" fill="#D7E7F0" fill-opacity=".25"/><circle cx="76" cy="47" r=".55" fill="#E4C3A5" fill-opacity=".28"/><circle cx="119" cy="112" r=".65" fill="#B9D3E2" fill-opacity=".20"/><circle cx="39" cy="126" r=".5" fill="#D7E7F0" fill-opacity=".18"/>
+  </pattern>
+</defs>
+<rect width="1920" height="1200" fill="url(#blueMist)"/>
+<rect width="1920" height="1200" fill="url(#warmMist)"/>
+<rect width="1920" height="1200" fill="url(#tealMist)"/>
+<!-- Broad, soft atmospheric light fields -->
+<ellipse cx="1530" cy="350" rx="520" ry="250" fill="#4D86A7" fill-opacity=".10" filter="url(#softGlow)"/>
+<ellipse cx="1320" cy="850" rx="440" ry="210" fill="#C18B6A" fill-opacity=".08" filter="url(#softGlow)"/>
+<!-- Orbital cradle geometry: deliberately off-centre so it frames, not competes with, content -->
+<g stroke="url(#orbitLine)" stroke-width="1.15">
+  <ellipse cx="1510" cy="580" rx="300" ry="230" transform="rotate(-18 1510 580)" opacity=".52"/>
+  <ellipse cx="1510" cy="580" rx="380" ry="292" transform="rotate(-18 1510 580)" opacity=".36"/>
+  <ellipse cx="1510" cy="580" rx="470" ry="360" transform="rotate(-18 1510 580)" opacity=".23"/>
+  <path d="M1155 505C1220 235 1510 126 1740 315" opacity=".35"/>
+  <path d="M1210 765C1325 1000 1600 1005 1780 780" opacity=".25"/>
+  <path d="M1450 180C1575 120 1710 150 1810 245" opacity=".20"/>
+</g>
+<g stroke="#D7AE8C" stroke-width="1.15" stroke-linecap="round" opacity=".40">
+  <path d="M1510 86V194"/><circle cx="1510" cy="207" r="9" fill="none"/><path d="M1760 415c22-18 46-18 68 0"/>
+  <path d="M1320 905C1410 960 1510 978 1610 952" opacity=".55"/>
+</g>
+<!-- Sound-current contours, long and low contrast -->
+<g stroke="url(#soundLine)" stroke-width="1.4" stroke-linecap="round">
+  <path d="M-60 905C120 815 240 815 420 905S720 995 900 905 1200 815 1380 905 1680 995 1980 850" opacity=".52"/>
+  <path d="M-60 958C120 868 240 868 420 958S720 1048 900 958 1200 868 1380 958 1680 1048 1980 903" opacity=".40"/>
+  <path d="M-60 1011C120 921 240 921 420 1011S720 1101 900 1011 1200 921 1380 1011 1680 1101 1980 956" opacity=".30"/>
+  <path d="M230 1110C370 1030 490 1030 630 1110S890 1190 1030 1110 1280 1030 1430 1110 1690 1190 1840 1110" opacity=".22"/>
+</g>
+<!-- Minimal botanical edge drawing -->
+<g stroke="url(#leafLine)" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".42">
+  <path d="M1792 115C1690 285 1695 450 1780 590C1844 695 1848 810 1798 920"/>
+  <path d="M1760 245C1685 232 1636 190 1615 117C1694 128 1744 171 1760 245Z"/>
+  <path d="M1737 355C1812 320 1858 262 1870 180C1797 211 1751 268 1737 355Z"/>
+  <path d="M1750 498C1675 486 1624 445 1600 374C1680 383 1732 426 1750 498Z"/>
+  <path d="M1782 655C1851 620 1891 563 1895 486C1827 517 1788 575 1782 655Z"/>
+  <path d="M1804 795C1730 790 1673 754 1641 687C1720 685 1777 722 1804 795Z"/>
+</g>
+<!-- Constellation details -->
+<g fill="#E4C3A5">
+  <circle cx="1080" cy="210" r="2.1" opacity=".58"/><circle cx="1215" cy="145" r="1.4" opacity=".42"/><circle cx="1775" cy="210" r="1.8" opacity=".55"/>
+  <circle cx="1115" cy="705" r="1.5" opacity=".42"/><circle cx="1680" cy="1000" r="1.6" opacity=".45"/><circle cx="930" cy="1020" r="1.2" opacity=".35"/>
+</g>
+<g stroke="#DAB18F" stroke-width="1" opacity=".40" stroke-linecap="round">
+  <path d="M1010 385V403M1001 394H1019"/><path d="M1690 105V123M1681 114H1699"/><path d="M1850 900V916M1842 908H1858"/>
+</g>
+<rect width="1920" height="1200" fill="url(#grain)" opacity=".20"/>
+</svg>
