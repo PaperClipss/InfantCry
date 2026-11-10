@@ -20,7 +20,7 @@
     const CONFIG = {
         // Same origin if the page is served by uvicorn on :8000,
         // otherwise call the API host on :8000 (adjust if you host elsewhere).
-        API_BASE: https://kartheeks-macbook-air.tail573f01.ts.net/api/,
+        API_BASE: "https://kartheeks-macbook-air.tail573f01.ts.net",
 
         MIN_PASSWORD_LENGTH: 6,             // must match MIN_PASSWORD_LENGTH in app.py
         MAX_UPLOAD_BYTES: 10 * 1024 * 1024, // must match MAX_UPLOAD_SIZE in app.py
