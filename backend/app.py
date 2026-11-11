@@ -1,3 +1,12 @@
+from contextlib import asynccontextmanager
+from pathlib import Path
+from urllib.parse import unquote
+import json
+import os
+import secrets
+import tempfile
+
+import psycopg
 from fastapi import (
     FastAPI,
     HTTPException,
@@ -8,35 +17,73 @@ from fastapi import (
     Depends,
     Header,
 )
+from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
-from pathlib import Path
-import sys
-
-BASE_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = BASE_DIR.parent
-
-sys.path.insert(0, str(PROJECT_ROOT))
-
-MODEL_PATH = PROJECT_ROOT / "model" / "crnn"/"crnn_semantic_weighted_no_aug_best.pth"
-CONFIG_PATH = PROJECT_ROOT / "model" / "crnn"/"preprocessing_config_semantic.json"
-from datetime import datetime, timezone
-from urllib.parse import unquote
-import tempfile
-import secrets
-import json
-import uuid
-
 from passlib.context import CryptContext
 
+from dbpy import pool
 from models import Entry, Feedback as FeedbackIn
-from model.crnn.inference import load_inference_model, predict_cry, CLASS_NAMES
+from inference import load_inference_model, predict_cry, CLASS_NAMES
 
 
 # --------------------------------------------------
-# 1. APPLICATION SETUP
+# 1. SETTINGS
 # --------------------------------------------------
 
-app = FastAPI()
+BASE_DIR = Path(__file__).resolve().parent
+
+MODEL_PATH = "crnn_semantic_weighted_no_aug_best.pth"
+CONFIG_PATH = "preprocessing_config_semantic.json"
+
+MAX_UPLOAD_SIZE = 10 * 1024 * 1024  # 10 MB
+MIN_PASSWORD_LENGTH = 6
+SESSION_HOURS = 24
+
+# This account is created on startup if it doesn't exist yet.
+# Set ADMIN_PASSWORD in .env; the fallback is for local development only.
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "nik@gmail.com").strip().lower()
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "123456")
+
+pwd_context = CryptContext(
+    schemes=["argon2"],
+    deprecated="auto"
+)
+# Used so a wrong e-mail takes as long to reject as a wrong password.
+DUMMY_HASH = pwd_context.hash("not-a-real-password")
+
+
+# --------------------------------------------------
+# 2. APPLICATION SETUP
+# --------------------------------------------------
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    pool.open()
+    pool.wait()
+
+    with pool.connection() as conn:
+        # Seed the admin account (does nothing if it already exists).
+        conn.execute(
+            """
+            INSERT INTO cry_analysis.users (email, password_hash, level)
+            VALUES (%s, %s, 'admin')
+            ON CONFLICT (email) DO NOTHING
+            """,
+            (ADMIN_EMAIL, pwd_context.hash(ADMIN_PASSWORD)),
+        )
+        # Housekeeping: drop expired sessions.
+        conn.execute(
+            "DELETE FROM cry_analysis.sessions WHERE expires_at < NOW()"
+        )
+
+    yield
+
+    # Shutdown
+    pool.close()
+
+
+app = FastAPI(lifespan=lifespan)
 
 # Development setting: any origin may call the API.
 # Tighten this to your real frontend address(es) before deploying.
@@ -48,54 +95,18 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-BASE_DIR = Path(__file__).resolve().parent
-
-MODEL_PATH = "model/crnn/crnn_semantic_weighted_no_aug_best.pth"
-CONFIG_PATH = "model/crnn/preprocessing_config_semantic.json"
-
-MAX_UPLOAD_SIZE = 10 * 1024 * 1024  # 10 MB
-MIN_PASSWORD_LENGTH = 6
-
-# Accounts whose e-mail is listed here get the admin dashboard.
-ADMIN_EMAILS = {"nik@gmail.com"}
-
-pwd_context = CryptContext(
-    schemes=["argon2"],
-    deprecated="auto"
-)
-# Used so a wrong e-mail takes as long to reject as a wrong password.
-DUMMY_HASH = pwd_context.hash("not-a-real-password")
-
-
-# --------------------------------------------------
-# 2. IN-MEMORY STORAGE  (same shapes as before)
-# --------------------------------------------------
-#   database[user_id]        = {"email", "password", "created_at"}
-#   login_record[token]      = {"email", "level"}
-#   analysis_records[id]     = {"analysis_id", "email", "filename", "prediction", "confidence", "timestamp"}
-#   Fb[analysis_id]          = {"analysis_id", "email", "helpful", "comment", "timestamp"}
-
-database = {}
-login_record = {}
-analysis_records = {}
-Fb = {}
-
-USER_CNT = 0
-
-
-def now_iso():
-    return datetime.now(timezone.utc).isoformat()
-
 
 def normalize_email(value):
     return str(value).strip().lower()
 
 
 def find_user(email):
-    for user in list(database.values()):
-        if user["email"] == email:
-            return user
-    return None
+    with pool.connection() as conn:
+        return conn.execute(
+            "SELECT user_id, email, password_hash, level "
+            "FROM cry_analysis.users WHERE email = %s",
+            (email,),
+        ).fetchone()
 
 
 # --------------------------------------------------
@@ -125,17 +136,29 @@ def get_current_user(
     elif session_cookie:
         token = session_cookie
 
-    session = login_record.get(token) if token else None
+    row = None
+    if token:
+        with pool.connection() as conn:
+            row = conn.execute(
+                """
+                SELECT u.user_id, u.email, u.level
+                FROM cry_analysis.sessions s
+                JOIN cry_analysis.users u ON u.user_id = s.user_id
+                WHERE s.token = %s AND s.expires_at > NOW()
+                """,
+                (token,),
+            ).fetchone()
 
-    if session is None:
+    if row is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Not authenticated"
         )
 
     return {
-        "email": session["email"],
-        "level": session["level"],
+        "user_id": row["user_id"],
+        "email": row["email"],
+        "level": row["level"],
         "token": token
     }
 
@@ -163,22 +186,14 @@ def Home():
 
 
 # --------------------------------------------------
-# 6. POST /api/auth/signup   (any number of accounts)
+# 6. POST /api/auth/signup
 # --------------------------------------------------
 
-database[USER_CNT] = {
-    "email" : normalize_email("nik@gmail.com"),
-    "password" : pwd_context.hash("123456"),
-    "created_at" : now_iso()
-}
-USER_CNT += 1
 @app.post(
     "/api/auth/signup",
     status_code=status.HTTP_201_CREATED
 )
 def Signup(entry: Entry):
-
-    global USER_CNT
 
     email = normalize_email(entry.Mail)
 
@@ -188,21 +203,21 @@ def Signup(entry: Entry):
             detail=f"Password must be at least {MIN_PASSWORD_LENGTH} characters"
         )
 
-    if find_user(email) is not None:
+    password_hashed = pwd_context.hash(entry.Password)
+
+    try:
+        with pool.connection() as conn:
+            conn.execute(
+                "INSERT INTO cry_analysis.users (email, password_hash) "
+                "VALUES (%s, %s)",
+                (email, password_hashed),
+            )
+    except psycopg.errors.UniqueViolation:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="An account with this email already exists"
         )
 
-    password_hashed = pwd_context.hash(entry.Password)
-
-
-    database[USER_CNT] = {
-        "email": email,
-        "password": password_hashed,
-        "created_at": now_iso()
-    }
-    USER_CNT += 1
     return {
         "success": True,
         "message": "Account created successfully"
@@ -223,7 +238,7 @@ def Login(
     user = find_user(email)
 
     # Always run one password check so timing doesn't reveal which e-mails exist.
-    stored_hash = user["password"] if user else DUMMY_HASH
+    stored_hash = user["password_hash"] if user else DUMMY_HASH
     password_ok = pwd_context.verify(entry.Password, stored_hash)
 
     if user is None or not password_ok:
@@ -232,15 +247,17 @@ def Login(
             detail="Invalid email or password"
         )
 
-    level = "admin" if user["email"] in ADMIN_EMAILS else "normal"
+    level = user["level"]
 
-    # One entry per login, so several people can be signed in at once.
+    # One row per login, so several people can be signed in at once.
     token = secrets.token_urlsafe(32)
 
-    login_record[token] = {
-        "email": user["email"],
-        "level": level
-    }
+    with pool.connection() as conn:
+        conn.execute(
+            "INSERT INTO cry_analysis.sessions (token, user_id, expires_at) "
+            "VALUES (%s, %s, NOW() + make_interval(hours => %s))",
+            (token, user["user_id"], SESSION_HOURS),
+        )
 
     response.set_cookie(
         key="session_id",
@@ -248,7 +265,7 @@ def Login(
         httponly=True,
         secure=False,  # Set True when deployed with HTTPS.
         samesite="lax",
-        max_age=60 * 60 * 24
+        max_age=60 * 60 * SESSION_HOURS
     )
 
     # The frontend reads "level" to choose between the user area and the admin panel.
@@ -280,7 +297,11 @@ def Logout(
     user=Depends(get_current_user)
 ):
 
-    login_record.pop(user["token"], None)
+    with pool.connection() as conn:
+        conn.execute(
+            "DELETE FROM cry_analysis.sessions WHERE token = %s",
+            (user["token"],),
+        )
 
     response.delete_cookie(
         key="session_id",
@@ -331,7 +352,9 @@ async def Analysis(
             temp_path = Path(temp.name)
             temp.write(audio_bytes)
 
-        result = predict_cry(
+        # Model inference is blocking, so keep it off the event loop.
+        result = await run_in_threadpool(
+            predict_cry,
             str(temp_path),
             inference=cry_model
         )
@@ -346,16 +369,16 @@ async def Analysis(
             if cleaned:
                 filename = cleaned
 
-        analysis_id = str(uuid.uuid4())
+        def save():
+            with pool.connection() as conn:
+                return conn.execute(
+                    "INSERT INTO cry_analysis.analyses "
+                    "(user_id, filename, prediction, confidence) "
+                    "VALUES (%s, %s, %s, %s) RETURNING analysis_id",
+                    (user["user_id"], filename, prediction, confidence),
+                ).fetchone()["analysis_id"]
 
-        analysis_records[analysis_id] = {
-            "analysis_id": analysis_id,
-            "email": user["email"],
-            "filename": filename,
-            "prediction": prediction,
-            "confidence": confidence,
-            "timestamp": now_iso()
-        }
+        analysis_id = str(await run_in_threadpool(save))
 
         return {
             "success": True,
@@ -390,15 +413,32 @@ def AnalysisHistory(
 
     limit = max(1, min(limit, 200))
 
-    mine = [
-        row for row in list(analysis_records.values())
-        if row["email"] == user["email"]
-    ]
-    mine.reverse()          # dicts keep insertion order -> newest first
+    with pool.connection() as conn:
+        rows = conn.execute(
+            """
+            SELECT a.analysis_id::text AS analysis_id,
+                   u.email,
+                   a.filename,
+                   a.prediction,
+                   a.confidence,
+                   a.created_at AS timestamp
+            FROM cry_analysis.analyses a
+            JOIN cry_analysis.users u ON u.user_id = a.user_id
+            WHERE a.user_id = %s
+            ORDER BY a.created_at DESC
+            LIMIT %s
+            """,
+            (user["user_id"], limit),
+        ).fetchall()
+
+        total = conn.execute(
+            "SELECT COUNT(*) AS n FROM cry_analysis.analyses WHERE user_id = %s",
+            (user["user_id"],),
+        ).fetchone()["n"]
 
     return {
-        "total": len(mine),
-        "entries": mine[:limit]
+        "total": total,
+        "entries": rows
     }
 
 
@@ -415,40 +455,47 @@ def SubmitFeedback(
     user=Depends(get_current_user)
 ):
 
-    analysis_id = getattr(fb, "analysis_id", None)
+    with pool.connection() as conn:
 
-    if analysis_id:
-        analysis = analysis_records.get(analysis_id)
-    else:
-        # No id given: use this user's most recent analysis.
-        analysis = None
-        for row in reversed(list(analysis_records.values())):
-            if row["email"] == user["email"]:
-                analysis = row
-                break
+        if fb.analysis_id:
+            analysis = conn.execute(
+                "SELECT analysis_id, user_id FROM cry_analysis.analyses "
+                "WHERE analysis_id = %s",
+                (fb.analysis_id,),
+            ).fetchone()
+        else:
+            # No id given: use this user's most recent analysis.
+            analysis = conn.execute(
+                "SELECT analysis_id, user_id FROM cry_analysis.analyses "
+                "WHERE user_id = %s ORDER BY created_at DESC LIMIT 1",
+                (user["user_id"],),
+            ).fetchone()
 
-    if analysis is None:
+        if analysis is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Analysis record not found"
+            )
 
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Analysis record not found"
+        if analysis["user_id"] != user["user_id"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You cannot submit feedback for this analysis"
+            )
+
+        # One feedback entry per analysis (a second submit replaces the first).
+        conn.execute(
+            """
+            INSERT INTO cry_analysis.feedback
+                (analysis_id, user_id, helpful, comment)
+            VALUES (%s, %s, %s, %s)
+            ON CONFLICT (analysis_id)
+            DO UPDATE SET helpful    = EXCLUDED.helpful,
+                          comment    = EXCLUDED.comment,
+                          created_at = NOW()
+            """,
+            (analysis["analysis_id"], user["user_id"], fb.helpful, fb.comment),
         )
-
-    if analysis["email"] != user["email"]:
-
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You cannot submit feedback for this analysis"
-        )
-
-    # One feedback entry per analysis (a second submit replaces the first).
-    Fb[analysis["analysis_id"]] = {
-        "analysis_id": analysis["analysis_id"],
-        "email": user["email"],
-        "helpful": fb.helpful,
-        "comment": fb.comment,
-        "timestamp": now_iso()
-    }
 
     return {
         "success": True,
@@ -463,29 +510,33 @@ def SubmitFeedback(
 @app.get("/api/admin/dashboard")
 def AdminDashboard(admin=Depends(require_admin)):
 
-    feedback_rows = list(Fb.values())
-    analysis_rows = list(analysis_records.values())
+    with pool.connection() as conn:
+        users = conn.execute(
+            "SELECT COUNT(*) AS n FROM cry_analysis.users"
+        ).fetchone()["n"]
 
-    total_feedback = len(feedback_rows)
-    helpful_count = sum(1 for item in feedback_rows if item["helpful"])
+        analyses = conn.execute(
+            "SELECT COUNT(*) AS n FROM cry_analysis.analyses"
+        ).fetchone()["n"]
 
-    class_distribution = {}
+        fb = conn.execute(
+            "SELECT COUNT(*) AS total, "
+            "COUNT(*) FILTER (WHERE helpful) AS helpful "
+            "FROM cry_analysis.feedback"
+        ).fetchone()
 
-    for item in analysis_rows:
-
-        label = item["prediction"]
-
-        class_distribution[label] = (
-            class_distribution.get(label, 0) + 1
-        )
+        dist = conn.execute(
+            "SELECT prediction, COUNT(*) AS n "
+            "FROM cry_analysis.analyses GROUP BY prediction"
+        ).fetchall()
 
     return {
-        "total_users": len(database),
-        "total_analyses": len(analysis_rows),
-        "total_feedback": total_feedback,
-        "helpful_feedback": helpful_count,
-        "not_helpful_feedback": total_feedback - helpful_count,
-        "class_distribution": class_distribution
+        "total_users": users,
+        "total_analyses": analyses,
+        "total_feedback": fb["total"],
+        "helpful_feedback": fb["helpful"],
+        "not_helpful_feedback": fb["total"] - fb["helpful"],
+        "class_distribution": {row["prediction"]: row["n"] for row in dist}
     }
 
 
@@ -496,12 +547,24 @@ def AdminDashboard(admin=Depends(require_admin)):
 @app.get("/api/admin/entries")
 def AdminEntries(admin=Depends(require_admin)):
 
-    entries = list(analysis_records.values())
-    entries.reverse()
+    with pool.connection() as conn:
+        rows = conn.execute(
+            """
+            SELECT a.analysis_id::text AS analysis_id,
+                   u.email,
+                   a.filename,
+                   a.prediction,
+                   a.confidence,
+                   a.created_at AS timestamp
+            FROM cry_analysis.analyses a
+            JOIN cry_analysis.users u ON u.user_id = a.user_id
+            ORDER BY a.created_at DESC
+            """
+        ).fetchall()
 
     return {
-        "total": len(entries),
-        "entries": entries
+        "total": len(rows),
+        "entries": rows
     }
 
 
@@ -540,10 +603,21 @@ def AdminModelConfig(admin=Depends(require_admin)):
 @app.get("/api/admin/feedback")
 def AdminFeedback(admin=Depends(require_admin)):
 
-    items = list(Fb.values())
-    items.reverse()
+    with pool.connection() as conn:
+        rows = conn.execute(
+            """
+            SELECT f.analysis_id::text AS analysis_id,
+                   u.email,
+                   f.helpful,
+                   f.comment,
+                   f.created_at AS timestamp
+            FROM cry_analysis.feedback f
+            JOIN cry_analysis.users u ON u.user_id = f.user_id
+            ORDER BY f.created_at DESC
+            """
+        ).fetchall()
 
     return {
-        "total": len(items),
-        "feedback": items
+        "total": len(rows),
+        "feedback": rows
     }
