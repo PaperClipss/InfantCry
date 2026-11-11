@@ -6,6 +6,8 @@ Datasets/
 backend/__pycache__/
 model/__pycache__/inference.cpython-313.pyc
 model/preprocessing_config_semantic.json
+model/transformer/__pycache__
+model/crnn/pycache
 model/test_audio1.wav
 model/test_audio2.wav
 model/test_audio3.wav
