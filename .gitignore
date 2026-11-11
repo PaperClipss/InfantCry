@@ -11,3 +11,5 @@ model/test_audio2.wav
 model/test_audio3.wav
 model/test_audio4.wav
 model/test_audio5.wav
+checkpoints/
+

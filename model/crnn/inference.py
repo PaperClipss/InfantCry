@@ -1,16 +1,16 @@
 import json
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
-MODEL_PATH = PROJECT_ROOT / "model" / "crnn_semantic_weighted_no_aug_best.pth"
-CONFIG_PATH = PROJECT_ROOT / "model" / "preprocessing_config_semantic.json"
+MODEL_PATH = PROJECT_ROOT / "model" / "crnn" / "crnn_semantic_weighted_no_aug_best.pth"
+CONFIG_PATH = PROJECT_ROOT / "model" / "crnn" / "preprocessing_config_semantic.json"
 
 import librosa
 import numpy as np
 import torch
 
-from model.model import CRNN
+from .model import CRNN
 
 SR, N_FFT, HOP, N_MELS = 16000, 1024, 256, 80
 FMIN, FMAX, DURATION = 20, 8000, 7

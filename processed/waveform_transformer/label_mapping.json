@@ -1,0 +1,16 @@
+{
+    "label_mapping": {
+        "neh": "hunger",
+        "owh": "sleepy",
+        "eh": "needs_to_burp",
+        "eairh": "gas_lower_wind_pain",
+        "heh": "physical_discomfort"
+    },
+    "class_to_idx": {
+        "hunger": 0,
+        "sleepy": 1,
+        "needs_to_burp": 2,
+        "gas_lower_wind_pain": 3,
+        "physical_discomfort": 4
+    }
+}

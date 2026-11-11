@@ -10,13 +10,15 @@ from fastapi import (
 )
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
-from pathlib import Path
+import sys
 
 BASE_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = BASE_DIR.parent
 
-MODEL_PATH = PROJECT_ROOT / "model" / "crnn_semantic_weighted_no_aug_best.pth"
-CONFIG_PATH = PROJECT_ROOT / "model" / "preprocessing_config_semantic.json"
+sys.path.insert(0, str(PROJECT_ROOT))
+
+MODEL_PATH = PROJECT_ROOT / "model" / "crnn"/"crnn_semantic_weighted_no_aug_best.pth"
+CONFIG_PATH = PROJECT_ROOT / "model" / "crnn"/"preprocessing_config_semantic.json"
 from datetime import datetime, timezone
 from urllib.parse import unquote
 import tempfile
@@ -27,7 +29,7 @@ import uuid
 from passlib.context import CryptContext
 
 from models import Entry, Feedback as FeedbackIn
-from InfantCry.model.crnn.inference import load_inference_model, predict_cry, CLASS_NAMES
+from model.crnn.inference import load_inference_model, predict_cry, CLASS_NAMES
 
 
 # --------------------------------------------------
@@ -48,8 +50,8 @@ app.add_middleware(
 
 BASE_DIR = Path(__file__).resolve().parent
 
-MODEL_PATH = "model/crnn_semantic_weighted_no_aug_best.pth"
-CONFIG_PATH = "model/preprocessing_config_semantic.json"
+MODEL_PATH = "model/crnn/crnn_semantic_weighted_no_aug_best.pth"
+CONFIG_PATH = "model/crnn/preprocessing_config_semantic.json"
 
 MAX_UPLOAD_SIZE = 10 * 1024 * 1024  # 10 MB
 MIN_PASSWORD_LENGTH = 6
