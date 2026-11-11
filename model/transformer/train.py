@@ -17,7 +17,7 @@ from sklearn.metrics import (
 
 from model import InfantCryTransformer
 from data_processing import (
-    OUTPUT_DIR,
+    CACHE_DIR,
     CLASS_TO_IDX,
     BATCH_SIZE,
     create_dataloaders
@@ -25,15 +25,15 @@ from data_processing import (
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
 CHECKPOINT_DIR = PROJECT_ROOT / "checkpoints" / "transformer"
 RESULTS_DIR = PROJECT_ROOT / "results" / "transformer"
-
-DEVICE = torch.device("mps")
 
 SEED = 42
 EPOCHS = 100
 LEARNING_RATE = 3e-4
 WEIGHT_DECAY = 1e-4
+
 EARLY_STOPPING_PATIENCE = 15
 MIN_DELTA = 0.0001
 GRADIENT_CLIP = 1.0
@@ -41,47 +41,65 @@ GRADIENT_CLIP = 1.0
 NUM_CLASSES = len(CLASS_TO_IDX)
 
 CLASS_NAMES = [
-    name for name, index in sorted(CLASS_TO_IDX.items(), key=lambda item: item[1])
+    name
+    for name, index in sorted(CLASS_TO_IDX.items(), key=lambda item: item[1])
 ]
+
+
+def check_device():
+    if not torch.cuda.is_available():
+        raise RuntimeError(
+            "CUDA is unavailable. Enable GPU in Kaggle Notebook Settings."
+        )
+
+    print("Training device: CUDA")
+    print("GPU:", torch.cuda.get_device_name(0))
+    print("CUDA version:", torch.version.cuda)
 
 
 def set_seed(seed):
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
-
-
-def check_device():
-    if not torch.backends.mps.is_built():
-        raise RuntimeError("PyTorch was not built with MPS support.")
-
-    if not torch.backends.mps.is_available():
-        raise RuntimeError("Apple MPS is unavailable. Training aborted.")
-
-    print("Training device:", DEVICE)
-    print("MPS available:", torch.backends.mps.is_available())
+    torch.cuda.manual_seed_all(seed)
 
 
 def get_class_weights():
-    train_metadata = pd.read_csv(OUTPUT_DIR / "train.csv")
+    labels = np.memmap(
+        CACHE_DIR / "train" / "labels.dat",
+        dtype=np.int64,
+        mode="r"
+    )
 
     class_counts = np.bincount(
-        train_metadata["label_id"].to_numpy(dtype=int),
+        np.asarray(labels),
         minlength=NUM_CLASSES
     )
 
     if np.any(class_counts == 0):
-        raise ValueError(f"At least one class has no training samples: {class_counts}")
+        raise ValueError(
+            f"At least one class has no training samples: {class_counts}"
+        )
 
     weights = class_counts.sum() / (NUM_CLASSES * class_counts)
 
-    weights = torch.tensor(weights, dtype=torch.float32, device=DEVICE)
+    weights = torch.tensor(
+        weights,
+        dtype=torch.float32,
+        device="cuda"
+    )
 
     print("\nTRAINING CLASS DISTRIBUTION")
     print("-" * 50)
 
-    for class_name, count, weight in zip(CLASS_NAMES, class_counts, weights.cpu().numpy()):
-        print(f"{class_name}: {count} samples | Weight: {weight:.4f}")
+    for class_name, count, weight in zip(
+        CLASS_NAMES,
+        class_counts,
+        weights.cpu().numpy()
+    ):
+        print(
+            f"{class_name}: {count} samples | Weight: {weight:.4f}"
+        )
 
     return weights
 
@@ -107,16 +125,28 @@ def calculate_metrics(targets, predictions):
 
 def run_epoch(model, loader, criterion, optimizer=None):
     training = optimizer is not None
-    model.train() if training else model.eval()
+
+    if training:
+        model.train()
+    else:
+        model.eval()
 
     total_loss = 0.0
     total_samples = 0
+
     all_targets = []
     all_predictions = []
 
     for batch in loader:
-        waveforms = batch["waveforms"].to(DEVICE)
-        labels = batch["labels"].to(DEVICE)
+        waveforms = batch["waveforms"].to(
+            "cuda",
+            non_blocking=True
+        )
+
+        labels = batch["labels"].to(
+            "cuda",
+            non_blocking=True
+        )
 
         if training:
             optimizer.zero_grad(set_to_none=True)
@@ -127,10 +157,16 @@ def run_epoch(model, loader, criterion, optimizer=None):
 
             if training:
                 loss.backward()
-                torch.nn.utils.clip_grad_norm_(model.parameters(), GRADIENT_CLIP)
+
+                torch.nn.utils.clip_grad_norm_(
+                    model.parameters(),
+                    GRADIENT_CLIP
+                )
+
                 optimizer.step()
 
         batch_size = labels.size(0)
+
         total_loss += loss.item() * batch_size
         total_samples += batch_size
 
@@ -139,13 +175,24 @@ def run_epoch(model, loader, criterion, optimizer=None):
         all_targets.extend(labels.detach().cpu().numpy())
         all_predictions.extend(predictions.detach().cpu().numpy())
 
-    metrics = calculate_metrics(all_targets, all_predictions)
+    metrics = calculate_metrics(
+        all_targets,
+        all_predictions
+    )
+
     metrics["loss"] = float(total_loss / total_samples)
 
     return metrics, all_targets, all_predictions
 
 
-def save_checkpoint(model, optimizer, scheduler, epoch, best_val_f1, filename):
+def save_checkpoint(
+    model,
+    optimizer,
+    scheduler,
+    epoch,
+    best_val_f1,
+    filename
+):
     checkpoint = {
         "epoch": epoch,
         "model_state_dict": model.state_dict(),
@@ -162,11 +209,14 @@ def save_checkpoint(model, optimizer, scheduler, epoch, best_val_f1, filename):
             "batch_size": BATCH_SIZE,
             "early_stopping_patience": EARLY_STOPPING_PATIENCE,
             "gradient_clip": GRADIENT_CLIP,
-            "device": str(DEVICE)
+            "device": "cuda"
         }
     }
 
-    torch.save(checkpoint, CHECKPOINT_DIR / filename)
+    torch.save(
+        checkpoint,
+        CHECKPOINT_DIR / filename
+    )
 
 
 def save_json(data, path):
@@ -183,8 +233,6 @@ def main():
 
     print("\nINFANTCRY TRANSFORMER TRAINING")
     print("=" * 60)
-    print("Device:", DEVICE)
-    print("Seed:", SEED)
 
     train_loader, validation_loader, test_loader = create_dataloaders()
 
@@ -196,15 +244,19 @@ def main():
         feedforward_dim=1024,
         dropout=0.1,
         max_tokens=350
-    ).to(DEVICE)
+    ).to("cuda")
 
     trainable_parameters = sum(
-        parameter.numel() for parameter in model.parameters() if parameter.requires_grad
+        parameter.numel()
+        for parameter in model.parameters()
+        if parameter.requires_grad
     )
 
     print("Trainable parameters:", f"{trainable_parameters:,}")
 
-    criterion = nn.CrossEntropyLoss(weight=get_class_weights())
+    criterion = nn.CrossEntropyLoss(
+        weight=get_class_weights()
+    )
 
     optimizer = torch.optim.AdamW(
         model.parameters(),
@@ -221,6 +273,7 @@ def main():
     )
 
     history = []
+
     best_val_f1 = -float("inf")
     best_epoch = 0
     patience_counter = 0
@@ -229,8 +282,18 @@ def main():
     print("=" * 60)
 
     for epoch in range(1, EPOCHS + 1):
-        train_metrics, _, _ = run_epoch(model, train_loader, criterion, optimizer)
-        val_metrics, _, _ = run_epoch(model, validation_loader, criterion)
+        train_metrics, _, _ = run_epoch(
+            model,
+            train_loader,
+            criterion,
+            optimizer
+        )
+
+        val_metrics, _, _ = run_epoch(
+            model,
+            validation_loader,
+            criterion
+        )
 
         scheduler.step(val_metrics["loss"])
 
@@ -244,11 +307,13 @@ def main():
         })
 
         print(f"\nEpoch [{epoch}/{EPOCHS}] LR: {current_lr:.7f}")
+
         print(
             f"Train | Loss: {train_metrics['loss']:.4f} "
             f"Acc: {train_metrics['accuracy']:.4f} "
             f"Macro F1: {train_metrics['macro_f1']:.4f}"
         )
+
         print(
             f"Val   | Loss: {val_metrics['loss']:.4f} "
             f"Acc: {val_metrics['accuracy']:.4f} "
@@ -261,31 +326,49 @@ def main():
             patience_counter = 0
 
             save_checkpoint(
-                model, optimizer, scheduler, epoch, best_val_f1, "best_model.pt"
+                model,
+                optimizer,
+                scheduler,
+                epoch,
+                best_val_f1,
+                "best_model.pt"
             )
 
             print("Best model checkpoint saved.")
+
         else:
             patience_counter += 1
 
         save_checkpoint(
-            model, optimizer, scheduler, epoch, best_val_f1, "latest_checkpoint.pt"
+            model,
+            optimizer,
+            scheduler,
+            epoch,
+            best_val_f1,
+            "latest_checkpoint.pt"
         )
 
-        save_json(history, RESULTS_DIR / "training_history.json")
+        save_json(
+            history,
+            RESULTS_DIR / "training_history.json"
+        )
 
         if patience_counter >= EARLY_STOPPING_PATIENCE:
-            print(f"\nEarly stopping at epoch {epoch}. Best epoch: {best_epoch}")
+            print(
+                f"\nEarly stopping at epoch {epoch}. "
+                f"Best epoch: {best_epoch}"
+            )
             break
 
     print("\nTRAINING COMPLETED")
     print("=" * 60)
+
     print("Best epoch:", best_epoch)
     print(f"Best validation macro F1: {best_val_f1:.4f}")
 
     checkpoint = torch.load(
         CHECKPOINT_DIR / "best_model.pt",
-        map_location=DEVICE,
+        map_location="cuda",
         weights_only=True
     )
 
@@ -295,7 +378,9 @@ def main():
     print("=" * 60)
 
     test_metrics, test_targets, test_predictions = run_epoch(
-        model, test_loader, criterion
+        model,
+        test_loader,
+        criterion
     )
 
     for metric, value in test_metrics.items():
@@ -316,21 +401,35 @@ def main():
         labels=list(range(NUM_CLASSES))
     )
 
-    pd.DataFrame(matrix, index=CLASS_NAMES, columns=CLASS_NAMES).to_csv(
+    pd.DataFrame(
+        matrix,
+        index=CLASS_NAMES,
+        columns=CLASS_NAMES
+    ).to_csv(
         RESULTS_DIR / "confusion_matrix.csv"
     )
 
-    save_json(test_metrics, RESULTS_DIR / "test_metrics.json")
-    save_json(report, RESULTS_DIR / "classification_report.json")
+    save_json(
+        test_metrics,
+        RESULTS_DIR / "test_metrics.json"
+    )
+
+    save_json(
+        report,
+        RESULTS_DIR / "classification_report.json"
+    )
 
     print("\nCLASSIFICATION REPORT")
-    print(classification_report(
-        test_targets,
-        test_predictions,
-        labels=list(range(NUM_CLASSES)),
-        target_names=CLASS_NAMES,
-        zero_division=0
-    ))
+
+    print(
+        classification_report(
+            test_targets,
+            test_predictions,
+            labels=list(range(NUM_CLASSES)),
+            target_names=CLASS_NAMES,
+            zero_division=0
+        )
+    )
 
     print("\nSaved checkpoints to:", CHECKPOINT_DIR)
     print("Saved results to:", RESULTS_DIR)
