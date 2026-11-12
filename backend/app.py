@@ -23,7 +23,7 @@ from passlib.context import CryptContext
 
 from dbpy import pool
 from models import Entry, Feedback as FeedbackIn
-from inference import load_inference_model, predict_cry, CLASS_NAMES
+from model.crnn.inference import load_inference_model, predict_cry, CLASS_NAMES
 
 
 # --------------------------------------------------
@@ -32,8 +32,8 @@ from inference import load_inference_model, predict_cry, CLASS_NAMES
 
 BASE_DIR = Path(__file__).resolve().parent
 
-MODEL_PATH = "crnn_semantic_weighted_no_aug_best.pth"
-CONFIG_PATH = "preprocessing_config_semantic.json"
+MODEL_PATH = "model/crnn/crnn_semantic_weighted_no_aug_best.pth"
+CONFIG_PATH = "model/crnn/preprocessing_config_semantic.json"
 
 MAX_UPLOAD_SIZE = 10 * 1024 * 1024  # 10 MB
 MIN_PASSWORD_LENGTH = 6
@@ -41,7 +41,7 @@ SESSION_HOURS = 24
 
 # This account is created on startup if it doesn't exist yet.
 # Set ADMIN_PASSWORD in .env; the fallback is for local development only.
-ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "nik@gmail.com").strip().lower()
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@gmail.com").strip().lower()
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "123456")
 
 pwd_context = CryptContext(

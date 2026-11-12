@@ -16,9 +16,7 @@ from torch.utils.data import Dataset, DataLoader
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
-DATASET_ROOT = Path(
-    "/kaggle/input/datasets/bnskartheek/infantcry-dbl/Datasets/Datasets"
-)
+DATASET_ROOT = PROJECT_ROOT / "Datasets" / "Datasets"
 
 METADATA_PATH = DATASET_ROOT / "metadata.csv"
 
