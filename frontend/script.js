@@ -20,7 +20,7 @@
     const CONFIG = {
         // Same origin if the page is served by uvicorn on :8000,
         // otherwise call the API host on :8000 (adjust if you host elsewhere).
-        API_BASE: "https://ip-172-31-4-118.tail573f01.ts.net",
+        API_BASE: "https://kartheeks-macbook-air.tail573f01.ts.net",
 
         MIN_PASSWORD_LENGTH: 6,             // must match MIN_PASSWORD_LENGTH in app.py
         MAX_UPLOAD_BYTES: 10 * 1024 * 1024, // must match MAX_UPLOAD_SIZE in app.py
@@ -69,7 +69,23 @@
         return text ? text.charAt(0).toUpperCase() + text.slice(1) : "Unknown";
     }
 
+    function isNotACryPrediction(label) {
+        const normalized = String(label ?? "")
+            .trim()
+            .toLowerCase()
+            .replace(/[\s-]+/g, "_");
+        return normalized === "not_a_cry" || normalized === "not_cry" || normalized === "notacry";
+    }
+
+    function formatPredictionSummary(label, confidence) {
+        const prediction = prettyLabel(label);
+        return isNotACryPrediction(label)
+            ? prediction
+            : `${prediction} · ${formatConfidence(confidence)}`;
+    }
+
     function formatConfidence(v) {
+        if (v === null || v === undefined || v === "") return "—";
         const n = Number(v);
         if (!Number.isFinite(n)) return "—";
         const pct = n <= 1 ? n * 100 : n;
@@ -122,10 +138,7 @@
         profileTriggerName: $("profileTriggerName"),
         profileMenuUsername: $("profileMenuUsername"),
         profileMenuProfile: $("profileMenuProfile"),
-        profileMenuPassword: $("profileMenuPassword"),
         profileMenuLogout: $("profileMenuLogout"),
-        passwordDialog: $("passwordChangeDialog"),
-        passwordDialogClose: $("passwordDialogClose"),
         loggedInUser: $("loggedInUser"),
 
         jumpToAudio: $("jumpToAudio"),
@@ -136,12 +149,15 @@
         audioSection: $("audioSection"),
         audioName: $("audioName"),
         audioPlayer: $("audioPlayer"),
-        removeAudio: $("removeAudio"),
         analyzeButton: $("analyzeButton"),
         analyzeMessage: $("analyzeMessage"),
         loadingBox: $("loadingBox"),
         resultBox: $("resultBox"),
         predictionText: $("predictionText"),
+        confidenceCard: $("confidenceCard"),
+        confidenceText: $("confidenceText"),
+        confidenceMeter: $("confidenceMeter"),
+        confidenceMeterTrack: $("confidenceMeterTrack"),
 
         feedbackYes: $("feedbackYes"),
         feedbackNo: $("feedbackNo"),
@@ -294,17 +310,9 @@
         menus.forEach((m) => { if (isMenuOpen(m)) setMenuOpen(m, false, { returnFocus }); });
     }
 
-    function openPasswordDialog() {
-        const d = els.passwordDialog;
-        if (!d) return;
-        if (typeof d.showModal === "function") { if (!d.open) d.showModal(); }
-        else showToast("Changing your password isn't available yet.");
-    }
-
     function runMenuAction(action) {
         closeAllMenus();
         if (action === "profile") showView("profile");
-        else if (action === "password") openPasswordDialog();
         else if (action === "logout") logout();
     }
 
@@ -354,7 +362,6 @@
             '</button>' +
             '<div class="profile-dropdown hidden" role="menu">' +
                 '<div class="profile-dropdown-heading"><strong data-admin-name>Admin</strong><small>InfantCry administrator</small></div>' +
-                '<button type="button" class="profile-menu-item" role="menuitem" data-menu-action="password"><span aria-hidden="true">♧</span> Change password</button>' +
                 '<div class="profile-menu-divider"></div>' +
                 '<button type="button" class="profile-menu-item profile-menu-logout" role="menuitem" data-menu-action="logout"><span aria-hidden="true">↪</span> Log out</button>' +
             '</div>';
@@ -365,7 +372,7 @@
     }
 
     function wireProfileMenus() {
-        const actionById = { profileMenuProfile: "profile", profileMenuPassword: "password", profileMenuLogout: "logout" };
+        const actionById = { profileMenuProfile: "profile", profileMenuLogout: "logout" };
         Object.entries(actionById).forEach(([id, action]) => {
             const node = $(id);
             if (node) node.dataset.menuAction = action;
@@ -376,10 +383,6 @@
         document.addEventListener("click", (e) => { if (!e.target.closest(".profile-menu-wrap")) closeAllMenus(); });
         document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAllMenus(true); });
 
-        if (els.passwordDialogClose) els.passwordDialogClose.addEventListener("click", () => els.passwordDialog.close());
-        if (els.passwordDialog) els.passwordDialog.addEventListener("click", (e) => {
-            if (e.target === els.passwordDialog) els.passwordDialog.close();
-        });
     }
 
     function updateUserDisplays() {
@@ -630,7 +633,6 @@
         renderHistory();
         destroyCharts();
         closeAllMenus();
-        if (els.passwordDialog && els.passwordDialog.open) els.passwordDialog.close();
 
         hide(els.analysisPage);
         hide(els.adminPage);
@@ -683,11 +685,12 @@
        ----------------------------------------------------------------- */
     function setAnalyzeMessage(text) { if (els.analyzeMessage) els.analyzeMessage.textContent = text; }
 
-    function setAudio(blob, name) {
+    function setAudio(blob, name, displayName = name) {
+        if (state.audio && els.audioPlayer && els.audioPlayer.src) URL.revokeObjectURL(els.audioPlayer.src);
         state.audio = { blob, name };
         if (els.audioPlayer) els.audioPlayer.src = URL.createObjectURL(blob);
-        if (els.audioName) els.audioName.textContent = name;
-        if (els.selectedFile) els.selectedFile.textContent = `${name} · ${formatBytes(blob.size)}`;
+        if (els.audioName) els.audioName.textContent = displayName;
+        if (els.selectedFile) els.selectedFile.textContent = `${displayName} · ${formatBytes(blob.size)}`;
         show(els.audioSection);
         if (els.analyzeButton) els.analyzeButton.disabled = false;
         setAnalyzeMessage("Ready to analyze.");
@@ -703,6 +706,9 @@
         if (els.audioFile) els.audioFile.value = "";
         if (els.selectedFile) els.selectedFile.textContent = "No file selected";
         if (els.recordTime && !recorder.active) els.recordTime.textContent = "00:00";
+        if (els.confidenceText) els.confidenceText.textContent = "—";
+        if (els.confidenceMeter) els.confidenceMeter.style.width = "0%";
+        if (els.confidenceMeterTrack) els.confidenceMeterTrack.setAttribute("aria-valuenow", "0");
         hide(els.audioSection);
         hide(els.resultBox);
         hide(els.loadingBox);
@@ -752,7 +758,7 @@
 
     async function startRecording() {
         if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
-            setAnalyzeMessage("Recording isn't supported in this browser. Please upload a WAV file instead.");
+            setAnalyzeMessage("Recording isn't supported in this browser. Please upload a WAV or MP3 file instead.");
             return;
         }
         let stream;
@@ -763,7 +769,7 @@
         } catch (error) {
             setAnalyzeMessage(error && error.name === "NotAllowedError"
                 ? "Microphone access was blocked. Allow it in your browser settings or upload a WAV file."
-                : "No microphone could be started. Please upload a WAV file instead.");
+                : "No microphone could be started. Please upload a WAV or MP3 file instead.");
             return;
         }
 
@@ -831,15 +837,43 @@
     async function handleFileChosen() {
         const file = els.audioFile.files && els.audioFile.files[0];
         if (!file) return;
-        const looksWav = /\.wav$/i.test(file.name) || /wav/i.test(file.type);
+
+        const isWav = /\.wav$/i.test(file.name) || /audio\/(x-)?wav|audio\/wave/i.test(file.type);
+        const isMp3 = /\.mp3$/i.test(file.name) || /audio\/(mpeg|mp3)/i.test(file.type);
         let problem = "";
-        if (!looksWav) problem = "Please choose a WAV file (.wav).";
-        else if (file.size === 0) problem = "That file is empty.";
-        else if (file.size > CONFIG.MAX_UPLOAD_BYTES) problem = `That file is too large (limit ${formatBytes(CONFIG.MAX_UPLOAD_BYTES)}).`;
-        else if (!(await isRealWav(file))) problem = "That doesn't look like a valid WAV file.";
-        els.audioFile.value = "";
-        if (problem) { els.selectedFile.textContent = problem; setAnalyzeMessage(problem); return; }
-        setAudio(file, file.name);
+
+        try {
+            if (file.size === 0) {
+                problem = "That file is empty.";
+            } else if (file.size > CONFIG.MAX_UPLOAD_BYTES) {
+                problem = `That file is too large (limit ${formatBytes(CONFIG.MAX_UPLOAD_BYTES)}).`;
+            } else if (isWav) {
+                if (!(await isRealWav(file))) problem = "That doesn't look like a valid WAV file.";
+                else setAudio(file, file.name);
+            } else if (isMp3) {
+                setAnalyzeMessage("Preparing MP3 audio for analysis…");
+                const wav = await blobToWav(file);
+                if (wav.size > CONFIG.MAX_UPLOAD_BYTES) {
+                    problem = `The converted WAV is too large (limit ${formatBytes(CONFIG.MAX_UPLOAD_BYTES)}). Try a shorter MP3 clip.`;
+                } else {
+                    const wavName = file.name.replace(/\.mp3$/i, ".wav");
+                    setAudio(wav, wavName, `${file.name} · converted to WAV`);
+                }
+            } else {
+                problem = "Please choose a WAV or MP3 audio file.";
+            }
+        } catch (error) {
+            problem = isMp3
+                ? "This MP3 could not be decoded by the browser. Try another MP3 or upload a WAV file."
+                : (error.message || "The audio file could not be prepared.");
+        } finally {
+            els.audioFile.value = ""; // selecting the same file again will still trigger the change event
+        }
+
+        if (problem) {
+            if (els.selectedFile) els.selectedFile.textContent = problem;
+            setAnalyzeMessage(problem);
+        }
     }
 
     /* -----------------------------------------------------------------
@@ -869,12 +903,15 @@
             const confidence = data?.prediction?.confidence;
 
             state.lastAnalysisId = data.analysis_id || null;
-            showResult(label);
+            showResult(label, confidence);
 
             await loadServerHistory();    // server is the source of truth
             setAnalyzeMessage("Analysis complete. You can analyze again anytime.");
-            // Keep confidence on the object for the admin table's benefit (not displayed to user).
-            els.resultBox.dataset.confidence = formatConfidence(confidence);
+            if (isNotACryPrediction(label)) {
+                delete els.resultBox.dataset.confidence;
+            } else {
+                els.resultBox.dataset.confidence = formatConfidence(confidence);
+            }
         } catch (error) {
             setAnalyzeMessage(error.message || "Analysis failed. Please try again.");
         } finally {
@@ -885,8 +922,31 @@
         }
     }
 
-    function showResult(label) {
+    function showResult(label, confidence) {
         if (els.predictionText) els.predictionText.textContent = prettyLabel(label);
+
+        const isNotACry = isNotACryPrediction(label);
+        if (els.confidenceCard) {
+            if (isNotACry) hide(els.confidenceCard);
+            else show(els.confidenceCard);
+        }
+
+        if (isNotACry) {
+            // A non-cry classification is a rejection result, not a cry-reason
+            // confidence score. Clear any previous value before hiding the card.
+            if (els.confidenceText) els.confidenceText.textContent = "";
+            if (els.confidenceMeter) els.confidenceMeter.style.width = "0%";
+            if (els.confidenceMeterTrack) els.confidenceMeterTrack.setAttribute("aria-valuenow", "0");
+        } else {
+            if (els.confidenceText) els.confidenceText.textContent = formatConfidence(confidence);
+            const rawConfidence = Number(confidence);
+            const percentage = Number.isFinite(rawConfidence)
+                ? Math.max(0, Math.min(100, rawConfidence <= 1 ? rawConfidence * 100 : rawConfidence))
+                : 0;
+            if (els.confidenceMeter) els.confidenceMeter.style.width = `${percentage}%`;
+            if (els.confidenceMeterTrack) els.confidenceMeterTrack.setAttribute("aria-valuenow", percentage.toFixed(1));
+        }
+
         resetFeedbackUi();
         show(els.resultBox);
         els.resultBox.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1073,7 +1133,7 @@
                 el("td", { title: entry.analysis_id, text: String(entry.analysis_id || "").slice(0, 8) }),
                 el("td", { text: entry.email || "—" }),
                 el("td", { text: formatDate(entry.timestamp) }),
-                el("td", { text: `${prettyLabel(entry.prediction)} · ${formatConfidence(entry.confidence)}` })
+                el("td", { text: formatPredictionSummary(entry.prediction, entry.confidence) })
             )
         );
         body.replaceChildren(...rows);
@@ -1206,7 +1266,6 @@
 
         if (els.recordButton) els.recordButton.addEventListener("click", () => (recorder.active ? stopRecording() : startRecording()));
         if (els.audioFile) els.audioFile.addEventListener("change", handleFileChosen);
-        if (els.removeAudio) els.removeAudio.addEventListener("click", clearAudio);
         if (els.analyzeButton) els.analyzeButton.addEventListener("click", analyze);
 
         if (els.feedbackYes) els.feedbackYes.addEventListener("click", () => chooseFeedback(true));
