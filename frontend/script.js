@@ -77,9 +77,18 @@
         return normalized === "not_a_cry" || normalized === "not_cry" || normalized === "notacry";
     }
 
+    // True when there is no meaningful confidence to display: either the label
+    // is "not a cry", or the backend sent 0 / nothing (it sends 0 for not-a-cry).
+    function shouldHideConfidence(label, confidence) {
+        if (isNotACryPrediction(label)) return true;
+        if (confidence === null || confidence === undefined || confidence === "") return true;
+        const n = Number(confidence);
+        return !Number.isFinite(n) || n === 0;
+    }
+
     function formatPredictionSummary(label, confidence) {
         const prediction = prettyLabel(label);
-        return isNotACryPrediction(label)
+        return shouldHideConfidence(label, confidence)
             ? prediction
             : `${prediction} · ${formatConfidence(confidence)}`;
     }
@@ -907,7 +916,7 @@
 
             await loadServerHistory();    // server is the source of truth
             setAnalyzeMessage("Analysis complete. You can analyze again anytime.");
-            if (isNotACryPrediction(label)) {
+            if (shouldHideConfidence(label, confidence)) {
                 delete els.resultBox.dataset.confidence;
             } else {
                 els.resultBox.dataset.confidence = formatConfidence(confidence);
@@ -925,7 +934,7 @@
     function showResult(label, confidence) {
         if (els.predictionText) els.predictionText.textContent = prettyLabel(label);
 
-        const isNotACry = isNotACryPrediction(label);
+        const isNotACry = shouldHideConfidence(label, confidence);
         if (els.confidenceCard) {
             if (isNotACry) hide(els.confidenceCard);
             else show(els.confidenceCard);
