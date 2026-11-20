@@ -24,9 +24,9 @@
             <div class="login-visual-copy" id="landingHome">
                 <span class="landing-eyebrow"><span aria-hidden="true"></span> A CALMER WAY TO LISTEN</span>
                 <h1 id="landingTitle">Every little sound.<br><em>Deserves care.</em></h1>
-                <p class="landing-lede">Some moments are hard to read. InfantCry gives you a thoughtful space to record a cry, explore the pattern a model predicts, and keep your own observations in focus.</p>
+                <p class="landing-lede">Some moments are hard to read. InfantCry gives you a thoughtful space to record a cry or choose a WAV or MP3 file, explore the pattern a model predicts, and keep your own observations in focus.</p>
                 <div class="login-value-list" aria-label="What InfantCry helps with">
-                    <div><span class="value-index">01</span><span><strong>Capture a moment</strong><small>Record or choose a WAV clip.</small></span></div>
+                    <div><span class="value-index">01</span><span><strong>Capture a moment</strong><small>Record or choose a WAV or MP3 clip.</small></span></div>
                     <div><span class="value-index">02</span><span><strong>Explore a pattern</strong><small>Review the category predicted by the model.</small></span></div>
                     <div><span class="value-index">03</span><span><strong>Decide with context</strong><small>Use your observations and seek care when needed.</small></span></div>
                 </div>
@@ -88,7 +88,6 @@
                         <div class="profile-dropdown hidden" id="profileDropdown" role="menu" aria-labelledby="logoutButton">
                             <div class="profile-dropdown-heading"><strong id="profileMenuUsername">Parent</strong><small>InfantCry account</small></div>
                             <button type="button" id="profileMenuProfile" class="profile-menu-item" role="menuitem"><span aria-hidden="true">♙</span> My profile</button>
-                            <button type="button" id="profileMenuPassword" class="profile-menu-item" role="menuitem"><span aria-hidden="true">♧</span> Change password</button>
                             <div class="profile-menu-divider"></div>
                             <button type="button" id="profileMenuLogout" class="profile-menu-item profile-menu-logout" role="menuitem"><span aria-hidden="true">↪</span> Log out</button>
                         </div>
@@ -156,7 +155,7 @@
                             </button>
                             <button type="button" class="start-option" data-view-link="analyze">
                                 <span class="start-option-icon start-upload-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 16V4m-4 4 4-4 4 4"/><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg></span>
-                                <span class="start-option-copy"><strong>Choose a WAV file</strong><small>Use an existing recording saved on your device.</small><em>Choose audio in workspace <b>↗</b></em></span>
+                                <span class="start-option-copy"><strong>Choose a recording</strong><small>Use a WAV or MP3 audio file from your device.</small><em>Choose audio in workspace <b>↗</b></em></span>
                                 <span class="start-option-arrow" aria-hidden="true">→</span>
                             </button>
                         </div>
@@ -196,7 +195,7 @@
                 <!-- GUIDED AUDIO WORKSPACE -->
                 <section class="secondary-view analyze-view" data-page-section="analyze" aria-labelledby="audioTitle">
                     <div class="page-heading analyze-page-heading" id="audioWorkspace">
-                        <div><span class="section-kicker">AUDIO WORKSPACE / NEW ANALYSIS</span><h2 id="audioTitle">Let's listen to the recording.</h2><p>Record a short clip or bring in a WAV file. You can review it before sending it for analysis.</p></div>
+                        <div><span class="section-kicker">AUDIO WORKSPACE / NEW ANALYSIS</span><h2 id="audioTitle">Let's listen to the recording.</h2><p>Record a short clip or bring in a WAV or MP3 file. You can review it before sending it for analysis.</p></div>
                         <span class="workspace-badge"><span></span> YOUR WORKSPACE</span>
                     </div>
 
@@ -221,25 +220,25 @@
 
                         <article class="audio-card upload-card">
                             <div class="audio-card-topline"><span class="audio-card-index">OPTION 02</span><span class="audio-card-status"><span></span> FILE UPLOAD</span></div>
-                            <div class="card-heading"><div class="card-symbol upload-symbol"><svg viewBox="0 0 24 24"><path d="M12 16V4m-4 4 4-4 4 4"/><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg></div><div><h3>Upload a WAV file</h3><p>Choose an existing recording from your device.</p></div></div>
+                            <div class="card-heading"><div class="card-symbol upload-symbol"><svg viewBox="0 0 24 24"><path d="M12 16V4m-4 4 4-4 4 4"/><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg></div><div><h3>Upload an audio file</h3><p>Choose an existing WAV or MP3 recording.</p></div></div>
                             <label for="audioFile" class="upload-file-picker">
                                 <span class="file-picker-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 16V4m-4 4 4-4 4 4"/><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg></span>
-                                <strong>Choose a WAV recording</strong><small>Select a file from your device</small>
-                                <span class="file-picker-format">WAV FORMAT <i>•</i> MAX 10 MB</span>
+                                <strong>Choose a WAV or MP3 recording</strong><small>Select an audio file from your device</small>
+                                <span class="file-picker-format">WAV OR MP3 <i>•</i> MAX 10 MB</span>
                             </label>
-                            <input class="visually-hidden" type="file" id="audioFile" accept=".wav,audio/wav,audio/x-wav,audio/wave">
+                            <input class="visually-hidden" type="file" id="audioFile" accept=".wav,.mp3,audio/wav,audio/x-wav,audio/wave,audio/mpeg,audio/mp3">
                             <p class="selected-file" id="selectedFile" aria-live="polite">No file selected</p>
-                            <p class="audio-card-footnote">Only valid WAV audio is accepted. Your file is checked before it is selected.</p>
+                            <p class="audio-card-footnote">WAV files are validated directly. MP3 files are converted to WAV in your browser before analysis.</p>
                         </article>
                     </div>
 
                     <section class="audio-section hidden" id="audioSection" aria-label="Selected audio preview">
-                        <div class="audio-section-header"><div><span class="section-title">STEP 02 / REVIEW YOUR CLIP</span><h3 id="audioName">Audio selected</h3><p class="audio-review-subtitle">Listen once before you send the clip for analysis.</p></div><button type="button" id="removeAudio" class="text-button" disabled>Remove clip</button></div>
+                        <div class="audio-section-header"><div><span class="section-title">STEP 02 / REVIEW YOUR CLIP</span><h3 id="audioName">Audio selected</h3><p class="audio-review-subtitle">Listen once before you send the clip for analysis.</p></div><span class="audio-ready-pill"><i aria-hidden="true"></i> READY TO REVIEW</span></div>
                         <div class="audio-preview-shell"><span class="audio-preview-icon" aria-hidden="true">♫</span><audio id="audioPlayer" controls preload="metadata" aria-label="Preview selected infant cry audio"></audio></div>
                     </section>
 
                     <div class="analyze-action-panel">
-                        <div class="analyze-action-copy"><span class="action-lock-icon" aria-hidden="true">⌁</span><div><strong>Ready to explore the audio?</strong><p id="analyzeMessage" role="status" aria-live="polite">Add a recording or choose a WAV file to continue.</p></div></div>
+                        <div class="analyze-action-copy"><span class="action-lock-icon" aria-hidden="true">⌁</span><div><strong>Ready to explore the audio?</strong><p id="analyzeMessage" role="status" aria-live="polite">Add a recording or choose a WAV or MP3 file to continue.</p></div></div>
                         <button type="button" id="analyzeButton" class="analyze-button" disabled>Analyze audio <span aria-hidden="true">→</span></button>
                     </div>
 
@@ -270,7 +269,16 @@
 
                     <section class="result-box hidden" id="resultBox" aria-live="polite">
                         <div class="result-heading"><span class="section-kicker">STEP 03 / MODEL OUTPUT</span><span class="result-state-pill"><span></span> ANALYSIS COMPLETE</span></div>
-                        <div class="result-main"><div class="result-emblem" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12h3l2-6 4 12 3-9 2 3h4"/></svg></div><div class="prediction-reason"><span class="prediction-label">PREDICTED CRY CATEGORY</span><h2 id="predictionText">Your result will appear here</h2><p>The category shown above is the model's prediction for this audio sample.</p></div></div>
+                        <div class="result-main">
+                            <div class="result-emblem" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12h3l2-6 4 12 3-9 2 3h4"/></svg></div>
+                            <div class="prediction-reason"><span class="prediction-label">PREDICTED CRY CATEGORY</span><h2 id="predictionText">Your result will appear here</h2><p>The category shown above is the model's prediction for this audio sample.</p></div>
+                            <div class="confidence-card" id="confidenceCard" aria-live="polite">
+                                <span class="confidence-kicker">MODEL CONFIDENCE</span>
+                                <strong id="confidenceText">—</strong>
+                                <div class="confidence-track" role="meter" aria-label="Model confidence" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="confidenceMeterTrack"><span id="confidenceMeter"></span></div>
+                                <small>Score returned by the model</small>
+                            </div>
+                        </div>
                         <div class="result-caution"><span aria-hidden="true">i</span><p>This is an exploratory audio prediction, not a diagnosis. It may not reflect the reason your baby is crying. Consider the full situation and seek professional advice when concerned.</p></div>
                         <div class="feedback-box">
                             <div class="feedback-heading"><span class="section-kicker">STEP 04 / YOUR FEEDBACK</span><h3>Was this result useful to you?</h3><p>Your response helps the team understand how useful the prediction was.</p></div>
@@ -294,8 +302,8 @@
                 <section class="secondary-view how-view" data-page-section="how" aria-labelledby="howTitle">
                     <div class="page-heading"><span class="section-kicker">A CLEAR, HONEST PROCESS</span><h2 id="howTitle">What happens to a recording?</h2><p>InfantCry turns a short audio sample into a model prediction. You stay in control at every step.</p></div>
                     <div class="how-flow">
-                        <article class="how-step-card"><span class="how-step-number">01</span><div class="how-step-icon"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5.5 10.5a6.5 6.5 0 0 0 13 0M12 17v4m-4 0h8"/></svg></div><h3>Bring in a sound</h3><p>Record a short sample with your microphone or choose an existing WAV file from your device.</p><span class="how-step-tag">YOUR AUDIO</span></article>
-                        <article class="how-step-card"><span class="how-step-number">02</span><div class="how-step-icon"><svg viewBox="0 0 24 24"><path d="M3 12h3l2-6 4 12 3-9 2 3h4"/></svg></div><h3>Review and prepare</h3><p>Listen to the selected clip. Recording audio is converted to WAV before it is submitted.</p><span class="how-step-tag">AUDIO PREPARATION</span></article>
+                        <article class="how-step-card"><span class="how-step-number">01</span><div class="how-step-icon"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5.5 10.5a6.5 6.5 0 0 0 13 0M12 17v4m-4 0h8"/></svg></div><h3>Bring in a sound</h3><p>Record a short sample with your microphone or choose an existing WAV or MP3 file from your device.</p><span class="how-step-tag">YOUR AUDIO</span></article>
+                        <article class="how-step-card"><span class="how-step-number">02</span><div class="how-step-icon"><svg viewBox="0 0 24 24"><path d="M3 12h3l2-6 4 12 3-9 2 3h4"/></svg></div><h3>Review and prepare</h3><p>Listen to the selected clip. Microphone audio is encoded as WAV; MP3 uploads are decoded and converted to WAV before submission.</p><span class="how-step-tag">AUDIO PREPARATION</span></article>
                         <article class="how-step-card"><span class="how-step-number">03</span><div class="how-step-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg></div><h3>Explore the prediction</h3><p>The existing model analyzes the audio and returns a predicted cry category for you to review.</p><span class="how-step-tag">MODEL OUTPUT</span></article>
                         <article class="how-step-card"><span class="how-step-number">04</span><div class="how-step-icon"><svg viewBox="0 0 24 24"><path d="M20 11.5a8 8 0 0 1-12.9 6.3L4 20l.9-4A8 8 0 1 1 20 11.5Z"/><path d="M8 12h8m-4-4v8"/></svg></div><h3>Share your feedback</h3><p>Tell us whether the result was useful. Comments are optional.</p><span class="how-step-tag">YOUR RESPONSE</span></article>
                     </div>
@@ -308,17 +316,13 @@
                     <div class="page-heading"><span class="section-kicker">ACCOUNT DETAILS</span><h2 id="profileTitle">Your caregiver profile</h2><p>Basic details for the account currently signed in to InfantCry.</p></div>
                     <article class="profile-overview-card"><div class="profile-avatar profile-avatar-large" id="profileAvatar">U</div><div class="profile-overview-copy"><span class="profile-role">SIGNED-IN ACCOUNT</span><h3 id="profileName">User</h3><p>Your signed-in caregiver account</p></div><span class="account-type-pill">Caregiver</span></article>
                     <div class="profile-detail-grid"><article class="profile-detail-card"><span class="section-kicker">ACCOUNT NAME</span><strong id="profileUsername">User</strong><p>The display name is based on the signed-in email address.</p></article><article class="profile-detail-card"><span class="section-kicker">ACCOUNT TYPE</span><strong>Caregiver</strong><p>This workspace is designed for recording and reviewing infant cry audio.</p></article><article class="profile-detail-card"><span class="section-kicker">PREFERENCES</span><strong>Appearance preference</strong><p>Use the theme switcher in the top bar to change the appearance.</p></article></div>
-                    <div class="profile-account-actions"><div><strong>Account access</strong><p>Use the account menu in the top bar to sign out or view account actions.</p></div><span class="account-menu-hint" aria-hidden="true">↗</span></div>
+                    <div class="profile-account-actions"><div><strong>Account access</strong><p>Use the account menu in the top bar to sign out.</p></div><span class="account-menu-hint" aria-hidden="true">↗</span></div>
                 </section>
             </section>
         </div>
 
         <footer class="footer"><span>InfantCry <i>•</i> Listen with care</span><span>Model predictions are exploratory, not medical advice.</span></footer>
     </main>
-
-    <dialog class="account-dialog" id="passwordChangeDialog" aria-labelledby="passwordDialogTitle">
-        <div class="account-dialog-content"><span class="section-kicker">ACCOUNT SECURITY</span><h2 id="passwordDialogTitle">Change password</h2><p>Password changes are not available through the current backend API yet. This option is informational and does not change your password.</p><button type="button" class="hero-cta" id="passwordDialogClose">Got it</button></div>
-    </dialog>
 
     <!-- ADMIN WORKSPACE -->
     <main class="analysis-page admin-page hidden" id="adminPage">
